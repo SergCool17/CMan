@@ -1,0 +1,1181 @@
+﻿//Библиотека стандартных процедур Потамуса
+
+//выбор 2 маркета
+SUB(SVN)
+   waitms(100)
+   KEYPRESS(#left)
+   waitms(100)
+   KEYPRESS(#left)
+   KEYPRESS(#5)
+   waitms(50)
+   KEYPRESS(#0)
+   waitms(50)
+   KEYPRESS(#3)
+   waitms(500)
+   KEYPRESS(#ENTER)
+END_SUB
+
+////////////////// закрытие сформированных отчетов////////////
+sub(close)
+   WAITMS(100)
+   wndbump($Pot1)
+   WAITMS(100)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS (#F4)
+   WAITMS (50)
+   KEYUP (#CTRL)
+END_SUB
+
+// закрытие Потамуса
+SUB(kill)
+   EXECUTE("TASKKILL","/F /IM PotamusStart.exe")
+   $cmd1=0
+   $cmd1 = WNDFIND("C:\Windows\System32\taskkill.exe" 0)
+   IF($cmd1 = 0)
+      LOGWRITE ("cmd закрыта сразу")
+      waitms(500)
+   ELSE
+      GETSCREEN
+      IF_PIXEL_IN(0,0, $_xmax,$_ymax, 3558085)
+         WAITMS(100)
+         LOGWRITE ("cmd закрыта анализом пикселей")
+         LCLICK($_return1, $_return2)
+         WAITMS(500)
+      END_IF
+   END_IF
+   LOGWRITE ("вышел из цикла")
+   
+   $Pot1 = WNDFIND("СИСТЕМА УЧЕТА - ООО НоваЦентрК :: Центральный офис", 0)
+   IF($Pot1 = 0)
+      wait(1)
+   ELSE
+      wndbump($Pot1)
+      waitms(500)
+      KEYDOWN (#ALT)
+      WAITMS (50)
+      KEYPRESS (#F4)
+      WAITMS (50)
+      KEYUP (#ALT)
+      WAITMS (50)
+      KEYPRESS (#ENTER)
+      waitms(500)
+   END_IF
+   IF($Pot1 = 0)
+      wait(1)
+   ELSE
+      wndbump($Pot1)
+      waitms(500)
+      KEYDOWN (#ALT)
+      WAITMS (50)
+      KEYPRESS (#F4)
+      WAITMS (50)
+      KEYUP (#ALT)
+      WAITMS (50)
+      KEYPRESS (#ENTER)
+   END_IF
+END_SUB
+
+//////////////////Присвоили переменной код окна  потамуса////////////
+
+SUB(HWN)
+   WAITMS(100)
+   //$hwnd
+   $Pot1=0
+   $Pot1 = WNDFIND("СИСТЕМА УЧЕТА - ООО НоваЦентрК :: Центральный офис", 0)
+   WNDBUMP($Pot1)
+   IF($Pot1 != 0)
+      LOGWRITE ("HWN() Потамус найден 1 через wfind ", $Pot1)
+   ELSE
+      WAITMS(100)
+      GETSCREEN
+      colormode(6)
+      //БЛОК1   поиск ярлыка потамуса,присвоение HWND
+      IF_PICTURE_IN (60,1000, 700,$_ymax, STRCONCAT("Картинки ОП\","Pot1.bmp"),-1,80)
+         LCLICK($_return1+5, $_return2+5)
+         $P=0
+         $P=$_return1
+         $P1=0
+         $P1=$_return2
+         WAIT(1)
+         move($P,$P1-30)
+         WAIT(1)
+         LCLICK($P,$P1-50)
+         WAIT(1)
+         LOGWRITE ("2 Потамус найден  картинкой")
+      Else
+         LOGWRITE ("Потамус не найден вторым способом, переоткроем Потамус ", $Pot1)
+         goto(begin)
+      END_IF
+   END_IF
+   LOGWRITE ("Potamus1=",$Pot1)
+   //присвоили переменную с кодом   Потамуса
+   wndbump($Pot1)
+   wait(1)
+END_SUB
+
+//скриншот ошибок
+SUB(scr)
+   $nam=STRCONCAT("C:\Clickermann v4.13 x64 - 3.5\screens\","ОШИБКА_",$_date_d,".",$_date_m,".",$_date_y,"  ",$_time_h,"_",$_time_m,".bmp")
+   GETSCREEN
+   COLORMODE(6)
+   SCREENSHOTFIX(0,0, $_xmax,$_ymax, $nam, 0)
+END_SUB
+
+//////открытие отчеты- фин.отчеты - продажи товара по поставщикам /////////////
+SUB(потоварно)
+   WAITMS(100)
+   KEYPRESS(#F10)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+END_SUB
+
+//////открытие отчеты- фин.отчеты - ...... /////////////
+SUB(пост)
+   KEYPRESS(#F10)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+END_SUB
+
+SUB(чеки)
+   WNDBUMP( WNDFIND("СИСТЕМА УЧЕТА - ООО НоваЦентрК :: Центральный офис", 0))
+   WAITMS(500)
+   wndbump($Pot1)
+   wait(1)
+   KEYPRESS(#F10)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#RIGHT)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+   KEYPRESS(#DOWN)
+   WAITMS(100)
+   KEYPRESS(#ENTER)
+   WAITMS(100)
+END_SUB
+
+//ОЖИДАНИЕ ОКОНЧАНИЯ ФОРМИРОВАНИЯ отчета с картинкой
+SUB(LoadWait)
+   LOGWRITE("ждем формирования отчета")
+   $time = $_time_t + 1200       //таймер 20 мин
+   WHILE($time > $_time_t)
+      GETSCREEN
+      colormode(6)
+      IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+         $time = 0
+         lclick($_return1+10, $_return2+10)
+         LOGWRITE("сформировался(определено по картинке)")
+      ELSE
+         GETSCREEN
+         IF_PIXEL_IN(0,0, $_xmax-100,$_ymax-100, 10677624)
+            move($_return1, $_return2)
+            WAITMS(300)
+            LOGWRITE("готово")
+            $time = 0
+         ELSE
+            IF_PIXEL_IN(0,0, $_xmax-100,$_ymax-100, 16315647)
+               move($_return1, $_return2)
+               WAITMS(300)
+               LOGWRITE("готово2")
+               $time = 0
+            ELSE
+               IF_PIXEL_IN(0,0, $_xmax-100,$_ymax-100, 15330046)
+                  move($_return1, $_return2)
+                  WAITMS(300)
+                  LOGWRITE("готово3")
+                  $time = 0
+               ELSE
+                  IF_PIXEL_IN(0,0, $_xmax-100,$_ymax-100, 14473207)
+                     move($_return1, $_return2)
+                     WAITMS(300)
+                     LOGWRITE("готовоZKZ")
+                     $time = 0
+                  ELSE
+                     IF_PIXEL_IN(0,0, $_xmax-100,$_ymax-100, 15847606)
+                        move($_return1, $_return2)
+                        WAITMS(300)
+                        LOGWRITE("готовоZKZ")
+                        $time = 0
+                     ELSE
+                        IF_PIXEL_IN(0,0, $_xmax-100,$_ymax-100, 10935222)
+                           move($_return1, $_return2)
+                           WAITMS(300)
+                           LOGWRITE("готовоZKZ")
+                           $time = 0
+                        END_IF
+                     END_IF
+                  END_IF
+               END_IF
+            END_IF
+         END_IF
+         WAIT(2)
+      END_IF
+   END_CYC
+   wait(1)
+   LOGWRITE("Отчет закрутился, переход к экспорту")
+END_SUB
+//ОЖИДАНИЕ ОКОНЧАНИЯ Экспорта
+SUB(ExpWait)
+   $check1 = 0
+   WHILE($check1 = 0)
+      GETSCREEN
+      colormode(6)
+      IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+         WAIT(5)
+      else
+         $check1 = 1
+         WAIT(5)
+      END_IF
+   END_CYC
+END_SUB
+
+//ОЖИДАНИЕ ОКОНЧАНИЯ ФОРМИРОВАНИЯ отчета по чекам
+SUB(CheckLoadWait)
+   $time = $_time_t + 1200       //таймер 20 мин
+   WHILE($time > $_time_t)
+      GETSCREEN
+      IF_PIXEL_IN(0,0, $_xmax,$_ymax, 13158400)
+         move($_return1, $_return2)
+         WAITMS(100)
+         lclick($_return1, $_return2)
+         WAITMS(100)
+         $time = 0
+      END_IF
+   END_CYC
+   waitms(500)
+   LOGWRITE("Отчет закрутился, переход к экспорту")
+END_SUB
+
+sub(reopen)
+   $count=0
+   bgn:
+   IF($count > 10)
+      halt
+      LOGWRITE ("Попытка перезапуска 10 раз")
+   END_IF
+   WAITMS(500)
+   kill()
+   WAIT(2)
+   EXECUTE("C:\Program Files (x86)\ASU-EpicentrK\PotamusGrid1\bin\PotamusStart.exe")
+   WAIT(2)
+   $pred = WNDFIND("Предупреждение!", 0)
+   WAITMS(500)
+   IF($pred > 0)
+      LOGWRITE ("Слишком часто предупреждение, ждем 30 сек")
+      WAIT(1)
+      KEYPRESS(#ENTER)
+      WAIT(30)
+      INC($count,1)
+      GOTO(bgn)
+   END_IF
+   //   GETSCREEN
+   //   COLORMODE(8)
+   //   IF_PICTURE_IN (500,400, 1100,600, STRCONCAT("Картинки ОП\","Предупреждение.bmp"), -1, 90)
+   //      move($_return1, $_return2)
+   //      LOGWRITE ("Слишком часто предупреждение, ждем 30 сек")
+   //      WAIT(1)
+   //      KEYPRESS(#ENTER)
+   //      WAIT(30)
+   //      INC($count,1)
+   //      GOTO(bgn)
+   //   else
+   //      LOGWRITE ("предупреждений нет")
+   //      WAIT(1)
+   //   END_IF
+   WAIT(7)
+   $r = WNDFIND("Регистрация пользователя", 0)
+   WAITMS(100)
+   IF($r = 0)
+      LOGWRITE ("потамус грузится")
+      WAIT(30)
+   END_IF
+   WNDBUMP($r)
+   WAITMS(500)
+   //вводим пароль
+   $P=STRREADLN("pw.txt", 1)
+   wait(1)
+   toclip($P)
+   KEYDOWN (#CTRL)
+   WAITMS(50)
+   KEYPRESS (#V)
+   KEYUP (#CTRL)
+   WAIT(1)
+   KEYPRESS (#ENTER)
+   LOGWRITE ("нажат ентер")
+   WAIT(3)
+   $erp = WNDFIND("ERP", 0)
+   WAITMS(500)
+   IF($erp > 0)
+      LOGWRITE ("Слишком часто ждем,  2 мин")
+      WAITMS(300)
+      KEYPRESS(#ENTER)
+      WAIT(120)
+      INC($count,1)
+      GOTO(bgn)
+   END_IF
+   //   GETSCREEN
+   //   COLORMODE(8)
+   //   IF_PICTURE_IN (500,400, 1100,600, STRCONCAT("Картинки ОП\","Ош1.bmp"), -1, 80)
+   //      move($_return1, $_return2)
+   //      LOGWRITE ("Слишком часто ждем,  2 мин")
+   //      WAITMS(300)
+   //      KEYPRESS(#ENTER)
+   //      WAIT(120)
+   //      INC($count,1)
+   //      GOTO(bgn)
+   //   else
+   //      LOGWRITE ("Не ждем 2 мин работаем без перезапуска")
+   //   END_IF
+   WAIT(1)
+   LCLICK(903,625)
+   
+   WAIT(1)
+   KEYPRESS(#ENTER)
+   WAITMS(1)
+   KEYPRESS(#ENTER)
+   WAIT(15)
+   
+   $h = WNDFIND("СИСТЕМА УЧЕТА - ООО НоваЦентрК :: Центральный офис", 0)
+   WNDBUMP($h)
+   WAITMS(500)
+   IF($h = 0)
+      LOGWRITE("нет Потамуса, перезапуск", $h)
+      scr()
+      INC($count,1)
+      GOTO(bgn)
+   ELSE
+      LOGWRITE(" Перезапустили потамус. Код окна", $h)
+   END_IF
+END_SUB
+
+SUB(screen)
+   wait(1)
+   EXECUTE("C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Месяц.pdf")
+   wait(5)
+   KEYPRESS(#F11)
+   wait(3)
+   getscreen
+   SCREENSHOTFIX(200,50, 1665,1000, "C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Месяц.jpg", 1)
+   wait(1)
+   KEYPRESS(#F11)
+   EXECUTE("C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Выторг.pdf")
+   wait(5)
+   KEYPRESS(#F11)
+   wait(3)
+   getscreen
+   SCREENSHOTFIX(200,50, 1665,1000, "C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Выторг.jpg", 1)
+   wait(1)
+   KEYPRESS(#F11)
+   wait(1)
+   EXECUTE("TASKKILL","/F /IM Foxit Phantom.exe")
+   $foxit=0
+   $foxit = WNDFIND("Выторг.pdf - Foxit Phantom - [Выторг.pdf]", 0)
+   IF($foxit=0)
+      waitms(100)
+   ELSE
+      wndbump($foxit)
+      wait(1)
+      KEYDOWN (#CTRL)
+      WAITMS (150)
+      KEYPRESS (#Q)
+      WAITMS (150)
+      KEYUP (#CTRL)
+      WAITMS (150)
+   END_IF
+END_SUB
+
+SUB(moz)
+   $one=0
+   $vh=0
+   $ch=0
+   $ot=0
+   $arh=0
+   $yd=0
+   $loc=0
+   $ish=0
+   $one= wndfind("1 - Mozilla Thunderbird")
+   IF($one > 0)
+      WNDBUMP($one)
+      LOGWRITE("1" $one)
+   ELSE
+      $vh= wndfind("Входящие - Mozilla Thunderbird")
+      IF($vh > 0)
+         wait(1)
+         WNDBUMP($vh)
+         LOGWRITE("вх" $vh)
+      ELSE
+         $ch= wndfind("Черновики - Mozilla Thunderbird")
+         IF($ch > 0)
+            WNDBUMP($ch)
+            LOGWRITE("ч" $ch)
+         ELSE
+            $ot= wndfind("Отправленные - Mozilla Thunderbird")
+            IF($ot > 0)
+               WNDBUMP($ot)
+               LOGWRITE("о" $ot)
+            ELSE
+               $arh= wndfind("Архивы - Mozilla Thunderbird")
+               IF($arh > 0)
+                  WNDBUMP($arh)
+                  LOGWRITE("а" $arh)
+               ELSE
+                  $yd= wndfind("Удалённые - Mozilla Thunderbird")
+                  WNDBUMP($yd)
+                  IF($yd > 0)
+                     wait(1)
+                     WNDBUMP($yd)
+                     LOGWRITE("у" $yd)
+                  ELSE
+                     $loc= wndfind("Локальные папки - Mozilla Thunderbird")
+                     IF($loc > 0)
+                        WNDBUMP($loc)
+                        LOGWRITE("л" $loc)
+                     ELSE
+                        $ish= wndfind("Исходящие - Mozilla Thunderbird")
+                        IF($ish > 0)
+                           WNDBUMP($ish)
+                           LOGWRITE("и" $ish)
+                        ELSE
+                           LOGWRITE("перезапуск Мозиллы")
+                           EXECUTE("TASKKILL","/F /IM thunderbird.exe")
+                           wait(3)
+                           EXECUTE("C:\Program Files (x86)\Mozilla Thunderbird\thunderbird.exe")
+                           wait(3)
+                           scr()
+                        END_IF
+                     END_IF
+                  END_IF
+               END_IF
+            END_IF
+         END_IF
+      END_IF
+   END_IF
+END_SUB
+
+SUB(send)
+   start:
+   reopen()
+   wait(25)
+   LOGWRITE("Таймер сработал. запуск")
+   HWN()
+   wndbump($Pot1)
+   WAITMS(100)
+   //переоткрыли, нашли окно, присвоили HWID, закрыли отчеты
+   пост()
+   WAIT(1)
+   GETSCREEN
+   COLORMODE(6)
+   IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Отчет.bmp"),-1,70)  //ищем границы отчета
+      LOGWRITE("+найден открытый отчет поступления")
+   Else
+      LOGWRITE("НЕ найден открытый отчет поступления")
+      scr()
+      GOTO(start)
+   end_if
+   $X1=0
+   $X1=$_return1
+   $Y1=0
+   $Y1=$_return2
+   logwrite("X1=",$X1)
+   logwrite("y1=",$Y1)
+   $X2=0
+   $X2=$X1+400
+   $Y2=0
+   $Y2=$Y1+500
+   logwrite("X2=",$X2)
+   logwrite("y2=",$Y2)
+   // присвоили переменные - границы окна настройки поступлений
+   
+   //открыть дату окончания
+   MOVE($X1+282, $Y1+95)
+   waitms(100)
+   LCLICK($X1+282, $Y1+95)
+   
+   //выставить сегодня
+   GETSCREEN($x1,$y1,$x1+280,$y1+280)
+   COLORMODE(5)
+   IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+      waitms(500)
+      lclick($_return1+10, $_return2+5)
+      waitms(500)
+      LCLICK($_return1, $_return2-148)
+      waitms(500)
+   Else
+      LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+      scr()
+   end_if  // обнулили дату окончания к  закрытому дню
+   
+   //   найдем начальный период
+   waitms(500)
+   LCLICK($X1+90, $Y1+95)
+   waitms(500)
+   GETSCREEN($x1,$y1,$x1+250,$y1+260)
+   COLORMODE(5)
+   IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+      waitms(500)
+      LCLICK($_return1, $_return2)
+      LCLICK($_return1, $_return2-148)
+      waitms(500)
+   Else
+      LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+      scr()
+   end_if
+   //сформировать
+   MOVE($x1+50,$y1+450)
+   waitms(500)
+   LCLICK($x1+50,$y1+450)
+   wait(1)
+   LoadWait()
+   
+   wait(1)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#A)
+   WAITMS (50)
+   KEYUP (#A)
+   KEYUP (#CTRL)
+   wait(2)
+   toclip("C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Выторг ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   WAITMS (50)
+   KEYPRESS(#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(10)
+   // заэкспортировали потоварно
+   ExpWait()
+   //проверили что уже заэкспортировался
+   wait(1)
+   wndbump($Pot1)
+   wait(1)
+   wndbump($Pot1)
+   waitms(500)
+   
+   close()
+   wait(1)
+   LOGWRITE("Поступления за сегодня закручены")
+   
+   
+   
+   ///////////////закрутим с начала месяца/////////////////////////////////////
+   
+   
+   //открыть дату окончания
+   MOVE($X1+282, $Y1+95)
+   waitms(100)
+   LCLICK($X1+282, $Y1+95)
+   
+   //выставить сегодня
+   GETSCREEN($x1,$y1,$x1+280,$y1+280)
+   COLORMODE(5)
+   IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+      waitms(500)
+      lclick($_return1+10, $_return2+5)
+      waitms(500)
+      LCLICK($_return1, $_return2-148)
+      waitms(500)
+      
+   Else
+      LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+      scr()
+   end_if  // обнулили дату окончания к  закрытому дню
+   
+   //   найдем начальный период
+   waitms(500)
+   LCLICK($X1+90, $Y1+95)
+   waitms(500)
+   GETSCREEN($x1,$y1,$x1+250,$y1+260)
+   COLORMODE(5)
+   IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+      waitms(500)
+      LCLICK($_return1, $_return2)
+      LCLICK($_return1, $_return2-148)
+      
+      waitms(500)
+      KEYPRESS(#0)
+      waitms(500)
+      KEYPRESS(#1)
+      
+   Else
+      LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+      scr()
+   end_if
+   
+   LCLICK($X1+21, $Y1+414)
+   waitms(500)
+   
+   //сформировать
+   MOVE($x1+50,$y1+450)
+   waitms(500)
+   LCLICK($x1+50,$y1+450)
+   wait(1)
+   
+   LoadWait()
+   
+   wait(1)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#A)
+   WAITMS (50)
+   KEYUP (#A)
+   KEYUP (#CTRL)
+   wait(2)
+   toclip("C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Месяц ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   WAITMS (50)
+   KEYPRESS(#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(10)
+   // заэкспортировали потоварно
+   ExpWait()
+   //проверили что уже заэкспортировался
+   wait(1)
+   wndbump($Pot1)
+   wait(1)
+   
+   
+   close()
+   wait(1)
+   LOGWRITE("Поступления за месяц закручены")
+   
+   ////////////////////////ЗАКРУТИЛИ МЕСЯЦ/////////////////////////////////
+   screen()
+   
+   $res=0
+   resend:
+   IF($res > 10)
+      LOGWRITE ("Попытка отправить 10 раз")
+      halt
+   END_IF
+   moz()
+   
+   WAIT (1)
+   
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS(#N)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (500)
+   
+   toclip("svoymanmail@gmail.com")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS (#V)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (500)
+   KEYPRESS(#ENTER)
+   WAITMS (500)
+   toclip("sergey.kul.2017@mail.ru")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS (#V)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (500)
+   KEYPRESS(#ENTER)
+   WAITMS (500)
+   KEYPRESS(#TAB)
+   WAITMS (50)
+   toclip(STRCONCAT("Поступления ",$_date_d,".",$_date_m,".",$_date_y,"  ",$_time_h,":",$_time_m))
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS (#V)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#SHIFT)
+   WAITMS (50)
+   KEYPRESS(#A)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (50)
+   KEYUP (#SHIFT)
+   WAITMS (500)
+   
+   toclip("C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Месяц.jpg")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS (#V)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (500)
+   KEYPRESS(#ENTER)
+   WAITMS (500)
+   
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#SHIFT)
+   WAITMS (50)
+   KEYPRESS(#A)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (50)
+   KEYUP (#SHIFT)
+   WAITMS (500)
+   toclip("C:\Users\s.kuleshov\Desktop\Запросы\Поступления\Вечер+Запрос\Выторг.jpg")
+   WAITMS(500)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS (#V)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (500)
+   KEYPRESS(#ENTER)
+   WAITMS (500)
+   
+   GETSCREEN
+   COLORMODE(8)
+   //screenshot
+   IF_PICTURE_IN (1450,75, 1811,194, STRCONCAT("Картинки ОП\","2.bmp"),-1,90)
+      LOGWRITE("2 вложения, ОК")
+   Else
+      LOGWRITE("не 2 вложения, перезапуск рассылки")
+      scr()
+      INC($res,1)
+      
+      GOTO (resend)
+      
+   end_if
+   
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS(#ENTER)
+   WAITMS (50)
+   KEYUP (#CTRL)
+   WAITMS (500)
+   
+END_SUB
+
+SUB(expZamena3.5)
+   $zamen=0
+   $zamen=WNDFIND("Подтвердить сохранение в виде", 0)
+   IF($zamen > 0)
+      KEYPRESS(#LEFT)
+      WAITMS(100)
+      KEYPRESS(#ENTER)
+      WAITMS(500)
+   END_IF
+END_SUB
+
+//////////////////выбор отдела в отчетах потамуса////////////
+SUB(otdel)
+   waitms(100)
+   SWITCH($otd)
+      CASE(1)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#1)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="10"
+      CASE(2)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#2)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="20"
+      CASE(3)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#2)
+         waitms(150)
+         KEYPRESS(#1)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="210"
+      CASE(4)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#3)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="30"
+      CASE(5)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#3)
+         waitms(150)
+         KEYPRESS(#1)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="310"
+      CASE(6)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#4)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="40"
+      CASE(7)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#5)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="50"
+      CASE(8)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#6)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="60"
+      CASE(9)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#7)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="70"
+      CASE(10)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#8)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="80"
+      CASE(11)
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#8)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+         $v="800"
+      CASE(12)
+         $v=90
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#9)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+      CASE(13)
+         $v="100"
+         KEYPRESS(#left)
+         waitms(150)
+         KEYPRESS(#1)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(150)
+         KEYPRESS(#0)
+         waitms(200)
+         KEYPRESS(#ENTER)
+         waitms(500)
+   END_SWITCH
+END_SUB
+
+SUB(date_begin)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   IF ($_date_m < 2)
+      KEYPRESS(#RIGHT)
+      WAITMS(500)
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+   END_IF
+END_SUB
+SUB(date_end)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+END_SUB
+SUB(date_6_begin)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   IF ($OTD=1)
+      KEYPRESS(#RIGHT)
+      WAITMS(500)
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+   else
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+      KEYPRESS(#DOWN)
+      WAITMS(500)
+      IF ($_date_m<7&$OTD>1)
+         KEYPRESS(#RIGHT)
+         WAITMS(500)
+         KEYPRESS(#DOWN)
+         WAITMS(500)
+      END_IF
+   END_IF
+END_SUB
+
+SUB(saveAs)
+   WAIT(1)
+   $save=0
+   $save=wndfind("Сохранить как")
+   WAIT(1)
+   IF($save > 0)
+      LOGWRITE("СОХРАНИТЬ КАК НАЙДЕНО,", $save)
+   ELSE
+      LOGWRITE("!!!!!!!!!!!!!ОКНО СОХРАНИТЬ_КАК НЕ НАЙДЕНО,", $save)
+      scr()
+   END_IF
+END_SUB
+SUB(moneyIncome)
+//не раб
+   WAIT(1)
+   $mon=0
+   $mon=wndfind("Поступление денег (по отделам)")
+   IF($mon > 0)
+      LOGWRITE("Поступление денег (по отделам) НАЙДЕНО,", $mon)
+   ELSE
+      LOGWRITE("!!!!!!!!!!!!!ОКНО Поступление денег (по отделам) НЕ НАЙДЕНО,", $mon)
+      scr()
+      WAIT(1)
+   END_IF
+END_SUB
+SUB(moneyIncomeClosed)
+//не раб
+   $monC=0
+   $monC=wndfind("Поступление денег (по отделам)")
+   IF($monC > 0)
+      LOGWRITE("!!!!!!!!!!!Поступление денег (по отделам) НАЙДЕНО,", $monC)
+   ELSE
+      LOGWRITE("ОКНО Поступление денег (по отделам) НЕ НАЙДЕНО,", $monC)
+      scr()
+   END_IF
+END_SUB
