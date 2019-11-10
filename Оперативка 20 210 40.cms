@@ -1,0 +1,4332 @@
+﻿///////////////////////////////////////////ОПЕРАТИВКА//////////////////////////
+
+
+//НЕЗакрытый месяц
+SUB(date_begin)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+END_SUB
+SUB(date_end)
+   KEYPRESS(#DOWN)
+   WAITMS(500) 
+END_SUB
+SUB(date_6_begin)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+END_SUB
+//НЕЗакрытый месяц
+
+////Закрытый месяц
+//SUB(date_begin)
+//   KEYPRESS(#0)
+//   WAITMS(500)
+//   KEYPRESS(#1)
+//   WAITMS(500)
+//   KEYPRESS(#RIGHT)
+//   WAITMS(500)
+//   KEYPRESS(#DOWN)
+//   WAITMS(500)
+//END_SUB
+//SUB(date_end)
+//   KEYPRESS(#RIGHT)
+//   WAITMS(500)
+//   KEYPRESS(#DOWN)
+//   WAITMS(500)
+//   KEYPRESS(#LEFT)
+//   WAITMS(500)   
+//   KEYPRESS(#0)
+//   WAITMS(500)   
+//   KEYPRESS(#1)
+//   WAITMS(500)  
+//   KEYPRESS(#DOWN)
+//   WAITMS(500) 
+//END_SUB
+//SUB(date_6_begin)
+//   KEYPRESS(#0)
+//   WAITMS(500)
+//   KEYPRESS(#1)
+//   WAITMS(500)
+//   KEYPRESS(#RIGHT)
+//   WAITMS(500)
+//   KEYPRESS(#DOWN)
+//   WAITMS(500)
+//      KEYPRESS(#DOWN)
+//   WAITMS(500)
+//      KEYPRESS(#DOWN)
+//   WAITMS(500)
+//      KEYPRESS(#DOWN)
+//   WAITMS(500)
+//      KEYPRESS(#DOWN)
+//   WAITMS(500)
+//      KEYPRESS(#DOWN)
+//   WAITMS(500)
+//END_SUB
+////Закрытый месяц
+SUB(Год)
+   KEYPRESS(#2)
+   WAITMS(50)
+   KEYPRESS(#0)
+   WAITMS(50)
+   KEYPRESS(#1)
+   WAITMS(50)
+   KEYPRESS(#8)
+   WAITMS(50)
+END_SUB
+SUB(SVN)
+   waitms(100)
+   KEYPRESS(#left)
+   waitms(100)
+   KEYPRESS(#left)
+   KEYPRESS(#5)
+   waitms(50)
+   KEYPRESS(#0)
+   waitms(50)
+   KEYPRESS(#3)
+   waitms(500)
+   KEYPRESS(#ENTER)
+   
+   
+END_SUB
+
+////////////////// закрытие сформированных отчетов////////////
+sub(close)
+   WAITMS(100)
+   wndbump($Pot1)
+   WAITMS(100)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYPRESS (#F4)
+   KEYUP (#CTRL)
+END_SUB
+
+//////////////////// выбор окна
+SUB(HWN)
+   WAITMS(100)
+   GETSCREEN
+   colormode(6)
+   //БЛОК1   поиск ярлыка потамуса,присвоение HWND
+   IF_PICTURE_IN (60,1000, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Pot1.bmp"),-1,80)
+      LCLICK($_return1+5, $_return2+5)
+   Else
+      LOGWRITE ("Не найдено ПОТАМУС")
+      halt
+   END_IF
+   $P=0
+   $P=$_return1
+   $P1=0
+   $P1=$_return2
+   WAIT(1)
+   move($P,$P1-30)
+   WAIT(1)
+   LCLICK($P,$P1-50)
+   WAIT(1)
+   $Pot1=0
+   $Pot1=hget(61,588)
+   LOGWRITE ("Potamus1=",$Pot1)
+   //присвоили переменную с кодом   Потамуса
+   wndbump($Pot1)
+   wait(1)
+END_SUB
+//////////////////Присвоили переменной код окна  потамуса////////////
+
+
+//////открытие отчеты- фин.отчеты - продажи товара по поставщикам /////////////
+
+SUB(потоварно) // подпрограмма
+   GETSCREEN
+   COLORMODE(6)         //поиск "отчеты-фин-птв"
+   IF_PICTURE_IN (280,14, 466,81, STRCONCAT("Картинки ОП\","Отчеты.bmp"),-1,80)
+      $Ox=0
+      $Ox=$_return1  +5
+      $Oy=0
+      $Oy=$_return2  +5
+      
+      wait(1)
+      LCLICK($Ox, $Oy+5)
+      WAIT(1)
+      MOVE($Ox, $Oy+535)
+      WAIT(1)
+      MOVE($Ox+260, $Oy+730)
+      WAIT(1)
+      LCLICK($Ox+260, $Oy+730)
+      WAIT(1)
+   Else
+      LOGWRITE("НЕ СМОГ ОТКРЫТЬ ПТВ")
+      halt
+   END_IF
+END_SUB
+////////////////////////////////////////////////////////////////
+//////открыли отчеты- фин.отчеты - продажи товара по поставщикам
+
+//////////////////выбор отдела в отчетах потамуса////////////
+SUB(P20)
+   waitms(100)
+   KEYPRESS(#left)
+   waitms(50)
+   KEYPRESS(#2)
+   waitms(50)
+   KEYPRESS(#0)
+   waitms(200)
+   KEYPRESS(#ENTER)
+   waitms(500)
+END_SUB
+
+SUB(P210)
+   waitms(100)
+   KEYPRESS(#left)
+   waitms(50)
+   KEYPRESS(#2)
+   waitms(50)
+   KEYPRESS(#1)
+   waitms(50)
+   KEYPRESS(#0)
+   waitms(200)
+   KEYPRESS(#ENTER)
+   waitms(500)
+END_SUB
+
+SUB(P40)
+   waitms(100)
+   KEYPRESS(#left)
+   waitms(50)
+   KEYPRESS(#4)
+   waitms(50)
+   KEYPRESS(#0)
+   waitms(200)
+   KEYPRESS(#ENTER)
+   waitms(500)
+END_SUB
+
+
+///////////////////////////////////////////////////////////////////////////////
+////////////////// ФОРМИРУЕМ потоварно для 40 отдела   ////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+ 
+LOGCLEAR
+//==============================================================================
+
+WHILE(($_time_h ! 1)|($_time_m ! 11)) // ждем 1:00
+   WAIT(5)
+END_CYC
+
+//==============================================================================
+
+LOGWRITE("Таймер сработал. запуск")
+
+HWN()
+//присвоили переменные с кодами всех окон Потамуса
+wndbump($Pot1)
+WAITMS(100)
+close()
+close()
+close()
+
+// открываем отчет потоварно
+потоварно()
+
+// открыли потоварно
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗВИТ.bmp"),-1,70)  //ищем границы отчета
+   LCLICK($_return1, $_return2)
+Else
+   LOGWRITE("!НЕ найдено период")
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X=",$X1)
+logwrite("y=",$Y1)
+$X2=0
+$X2=$X1+657
+$Y2=0
+$Y2=$Y1+698
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки потоварно
+LCLICK($X1+250, $Y1+55)
+wait(1)
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+date_end()
+Else
+   LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили потоварно за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+   LCLICK($x1+17,$y1+127)
+   WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+   LCLICK($x1+17,$y1+152)
+   WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+   LCLICK($x1+17,$y1+477)
+   WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+   LCLICK($x1+17,$y1+497)
+   WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+457)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+127)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+152)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+217)
+   WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P40()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+
+LCLICK($x1+600,$y1+160)
+
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// выбрали 40 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+      $time = 0
+      lclick($_return1+10, $_return2+10)
+   ELSE
+      WAIT(10)
+   END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\40\по_товарно ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+$check1 = 0
+WHILE($check1 = 0)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+      WAIT(3)
+   else
+      $check1 = 1
+      WAIT(10)
+   END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Потоварно закручен")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ПОТОВАРНО  ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+////////////////// ФОРМИРУЕМ потоварно_6мес для 40 отдела   ///////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+date_end()
+Else
+   LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_6_begin()
+// c 1 числа
+// выставили потоварно за 6 месяц
+waitms(500)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+   LCLICK($x1+17,$y1+127)
+   WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+   LCLICK($x1+17,$y1+152)
+   WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+   LCLICK($x1+17,$y1+477)
+   WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+   LCLICK($x1+17,$y1+497)
+   WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+457)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+127)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+152)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+217)
+   WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P40()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+
+LCLICK($x1+600,$y1+160)
+
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// выбрали 40 отдел, очистив маркет и артикула
+
+
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+      $time = 0
+      lclick($_return1+10, $_return2+10)
+   ELSE
+      WAIT(1)
+   END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\40\по_товарно_6міс ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+
+
+$check1 = 0
+WHILE($check1 = 0)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+      WAIT(1)
+   else
+      $check1 = 1
+      WAIT(10)
+   END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно 6 мес закручен")
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ПОТОВАРНО_6_МЕС/////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+////Формируем ПОТОВАРНО_ИМПОРТ//////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+date_end()
+Else
+   LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили потоварно за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+   LCLICK($x1+17,$y1+127)
+   WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+   LCLICK($x1+17,$y1+152)
+   WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+   LCLICK($x1+17,$y1+477)
+   WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+   LCLICK($x1+17,$y1+497)
+   WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+   LCLICK($x1+17,$y1+457)
+   WAITMS(100)
+   
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+127)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+   LCLICK($x1+237,$y1+152)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+217)
+   WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(200)
+P40()
+WAITMS(200)
+LCLICK($x1+328,$y1+245)
+WAITMS(200)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+LCLICK($x1+300,$y1+375)
+wait(1)
+toclip("34569085")
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(2)
+KEYPRESS(#ENTER)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+   LCLICK($_return1+5, $_return2+5)
+   WAITMS(500)
+else
+   halt
+END_IF  //ВСТАВКа ПКВ ТРЕЙД
+
+LCLICK($x1+600,$y1+160)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// выбрали 40 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+      $time = 0
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\40\по_товарно_ім ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAIT(10)
+// заэкспортировали потоварно
+end_if
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+   WAIT(3)
+else
+   $check1 = 1
+   WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+WAIT(1)
+wndbump($Pot1)
+WAIT(1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно имп закручен")
+//////////////////////////////////////////////////////////////////////////
+////////////////////////СДЕЛАЛИ ПТВ_ИМП//////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+//Формируем ПОТОВАРНО_6_МЕС _ИМПОРТ//////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_6_begin()
+// c 1 числа
+// выставили потоварно за 6 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(200)
+P40()
+WAITMS(200)
+LCLICK($x1+328,$y1+245)
+WAITMS(200)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+LCLICK($x1+300,$y1+375)
+wait(1)
+toclip("34569085")
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(2)
+KEYPRESS(#ENTER)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+LCLICK($_return1+5, $_return2+5)
+WAITMS(500)
+else
+halt
+END_IF  //ВСТАВКа ПКВ ТРЕЙД
+
+LCLICK($x1+600,$y1+160)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// выбрали 40 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+   $time = 0
+ELSE
+   WAIT(5)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\40\по_товарно_6міс_ім ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAIT(10)
+
+// заэкспортировали потоварно
+end_if
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+WAIT(3)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+WAIT(1)
+wndbump($Pot1)
+WAIT(1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно 6 мес имп закручен")
+
+//////////////////	 ///////////////////////////////////////////////
+//////////////// // СФОРМИРОВАЛИ ПТВимп6_МЕС_ИМП        ////////////
+///////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/////////////////////ФОРМИРУЕМ РУХ/////////////////////
+///////////////////////////////////////////////////////
+wndbump($Pot1)
+close()
+close()
+wait(1)
+lclick(286, 82)
+wait(1)
+lclick(286, 82)
+wait(1)
+// открыли рух
+GETSCREEN
+COLORMODE(5)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Рух.bmp"), -1, 80)
+move($_return1, $_return2)
+WAITMS(100)
+else
+LOGWRITE ("НЕ ОТКРЫЛ РУХ")
+END_IF
+$Xv=0
+$Xv=$_return1
+$Yv=0
+$Yv=$_return2
+LOGWRITE ("Xv=",$Xv)
+LOGWRITE ("Yv=",$Yv)
+LCLICK($Xv+198, $Yv+55)
+wait(1)
+GETSCREEN
+COLORMODE(5)
+IF_PICTURE_IN ($xv,$yv,$xv+280,$yv+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if
+// обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($xv+90, $yv+61)
+waitms(500)
+GETSCREEN($xv,$yv,$xv+280,$yv+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xv,$yv,$xv+280,$yv+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили рух за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел поставщика   и товар
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+198,$yv+100)=16777215)
+lclick($xv+198,$yv+100)
+WAITMS(100)
+END_IF     //проверили галку формировать по факту отгрузки
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+19,$yv+100)!16777215)
+lclick($xv+19,$yv+100)
+WAITMS(100)
+END_IF     //проверили галку развернуть по партиям
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+19,$yv+125)!16777215)
+lclick($xv+19,$yv+125)
+WAITMS(100)
+END_IF     //проверили галку развернуть по док
+WAITMS(100)
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+15,$yv+432)=16777215)
+lclick($xv+15,$yv+432)
+WAITMS(100)
+END_IF     //проверили галку не выводить товар без движ
+LCLICK($xv+297,$yv+225)     //выбрать отдел
+WAITMS(100)
+
+P40()
+// выбрали 40 отдел, очистив артикула
+WAITMS(500)
+LCLICK($xv+297,$yv+200)     //выбрать отдел
+WAITMS(100)
+SVN()
+WAITMS(500)
+//выставили маркет
+
+LCLICK($xv+601,$yv+156)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+LCLICK($xv+55,$yv+537)    //закрутили рух
+
+//ждем пока закрутится рух
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Рух_тов.bmp"),-1,80)
+$time = 0
+LOGWRITE ("закрутился")
+ELSE
+LOGWRITE ("не закрутился еще")
+WAIT(4)
+END_IF
+WAIT(1)
+END_CYC
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\40\рух_товару_кількісний ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали рух
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(5)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+WAITMS(300)
+LOGWRITE ("рух закручен")
+////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ РУХ/////////////////////////
+////////////////////////////////////////////////////////////////
+
+
+//////////////////Формируем ЗКЗ///////////////////////////////
+/////////////////////////////////////////////////////////////
+
+wndbump($Pot1)
+close()
+close()
+close()
+GETSCREEN
+COLORMODE(6)
+//поиск "отчеты-фин-птв"
+IF_PICTURE_IN (280,14, 466,81, STRCONCAT("Картинки ОП\","Отчеты.bmp"),-1,80)
+$Ox=0
+$Ox=$_return1  +5
+$Oy=0
+$Oy=$_return2  +5
+wait(1)
+LCLICK($Ox, $Oy+5)
+WAIT(1)
+MOVE($Ox, $Oy+90)
+WAIT(1)
+MOVE($Ox+260, $Oy+133)
+WAIT(1)
+LCLICK($Ox+260, $Oy+133)
+WAIT(1)
+Else
+LOGWRITE("НЕ СМОГ ОТКРЫТЬ ЗКЗ")
+halt
+END_IF
+// открыли ЗКЗ
+wait(1)
+GETSCREEN
+COLORMODE(8)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗКЗ.bmp"), -1, 80)
+move($_return1, $_return2)
+WAIT(1)
+else
+LOGWRITE ("НЕ НАШЕЛ ЗКЗ")
+HINTPOPUP("NOOOO", "NOOOO")
+halt
+END_IF
+$Xz=0
+$Xz=$_return1
+$Yz=0
+$Yz=$_return2
+LOGWRITE ("Xz=",$Xz)
+LOGWRITE ("Yz=",$Yz)
+LCLICK($Xz+287, $Yz+74)
+wait(1)
+GETSCREEN($xz,$yz,$xz+280,$yz+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xz,$yz,$xz+280,$yz+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($xz+162, $yz+74)
+waitms(500)
+GETSCREEN($xz,$yz,$xz+280,$yz+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xz,$yz,$xz+280,$yz+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+//выставили зкз за 1 месяц
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+//обнулили отдел поставщика   и товар
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+253)=16777215)
+lclick($xz+35,$yz+253)
+WAITMS(100)
+END_IF     //проверили галку  разв по пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+273)!16777215)
+lclick($xz+35,$yz+273)
+WAITMS(100)
+END_IF     //проверили галку по док
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+293)!16777215)
+lclick($xz+35,$yz+293)
+WAITMS(100)
+END_IF     //проверили галку по товарам
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+313)!16777215)
+lclick($xz+35,$yz+313)
+WAITMS(100)
+END_IF     //проверили галку по зпт
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+333)=16777215)
+lclick($xz+35,$yz+333)
+WAITMS(100)
+END_IF     //проверили галку по только ПО    закр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+33,$yz+354)!16777215)
+lclick($xz+33,$yz+354)
+WAITMS(100)
+END_IF     //проверили галку по незакр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+373)!16777215)
+lclick($xz+35,$yz+373)
+WAITMS(100)
+END_IF     //проверили галку по дате ож пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+445)=16777215)
+lclick($xz+37,$yz+445)
+WAITMS(100)
+END_IF     //основной
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+497)=16777215)
+lclick($xz+37,$yz+497)
+WAITMS(100)
+END_IF     // по зкз
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+542)=16777215)
+lclick($xz+37,$yz+542)
+WAITMS(100)
+END_IF     //к-ву
+LCLICK($xz+288,$yz+140)     //выбрать отдел
+WAITMS(100)
+P40()
+WAITMS(100)
+LCLICK($xz+288,$yz+110)     //выбрать маркет
+WAITMS(500)
+SVN()
+WAITMS(500)
+LCLICK($xz+130,$yz+572)    //закрутили зкз
+//ждем пока закрутится отчет
+
+$time = $_time_t + 600       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Список.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+LOGWRITE("заказ закрутился")
+ELSE
+LOGWRITE("заказ еще не закрутился")
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\40\заказ ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+
+// заэкспортировали
+
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+
+LOGWRITE("заказ закручен")
+
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ заказ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+253)=16777215)
+lclick($xz+35,$yz+253)
+WAITMS(100)
+END_IF     //проверили галку  разв по пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+273)!16777215)
+lclick($xz+35,$yz+273)
+WAITMS(100)
+END_IF     //проверили галку по док
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+293)!16777215)
+lclick($xz+35,$yz+293)
+WAITMS(100)
+END_IF     //проверили галку по товарам
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+313)!16777215)
+lclick($xz+35,$yz+313)
+WAITMS(100)
+END_IF     //проверили галку по зпт
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+333)=16777215)
+lclick($xz+35,$yz+333)
+WAITMS(100)
+END_IF     //проверили галку по только ПО    закр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+33,$yz+354)!16777215)
+lclick($xz+33,$yz+354)
+WAITMS(100)
+END_IF     //проверили галку по незакр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+373)!16777215)
+lclick($xz+35,$yz+373)
+WAITMS(100)
+END_IF     //проверили галку по дате ож пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+445)!16777215)
+lclick($xz+230,$yz+445)
+WAITMS(100)
+END_IF     //ПО ДОВОЗУ
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+497)=16777215)
+lclick($xz+37,$yz+497)
+WAITMS(100)
+END_IF     // по зкз
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+542)=16777215)
+lclick($xz+37,$yz+542)
+WAITMS(100)
+END_IF     //к-ву
+LCLICK($xz+288,$yz+140)     //выбрать отдел
+WAITMS(100)
+P40()
+WAITMS(100)
+LCLICK($xz+288,$yz+110)     //выбрать маркет
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+LCLICK($xz+130,$yz+572)    //закрутили зкз
+//ждем пока закрутится отчет
+
+$time = $_time_t + 600       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Список.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+LOGWRITE("заказ закрутился")
+ELSE
+LOGWRITE("заказ еще не закрутился")
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\40\заказ_по_довозу ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+wait(1)
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+LOGWRITE ("40 ГОТОВ")
+////////////////////////  ЗАКРУТИЛИ заказ_по_довозу/////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////40 ГОТОВ///////////////////////////////////
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+////////////////// ФОРМИРУЕМ потоварно для 210 отдела   ////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+wndbump($Pot1)
+WAITMS(100)
+close()
+close()
+close()
+
+// открываем отчет потоварно
+потоварно()
+
+// открыли потоварно
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗВИТ.bmp"),-1,70)  //ищем границы отчета
+LCLICK($_return1, $_return2)
+Else
+LOGWRITE("!НЕ найдено период")
+halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X=",$X1)
+logwrite("y=",$Y1)
+$X2=0
+$X2=$X1+657
+$Y2=0
+$Y2=$Y1+698
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки потоварно
+LCLICK($X1+250, $Y1+55)
+wait(1)
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили потоварно за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P210()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+
+
+LCLICK($x1+600,$y1+160)
+
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// выбрали 210 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+ELSE
+WAIT(10)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\210\по_товарно ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+WAIT(3)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+
+close()
+wait(1)
+LOGWRITE("Потоварно закручен")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ПОТОВАРНО  ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+////////////////// ФОРМИРУЕМ потоварно_6мес для 210 отдела   ///////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("210 НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("210 НЕ СМОГ найти день начала-сегодня")
+end_if
+date_6_begin()
+// c 1 числа
+// выставили потоварно за 6 месяц
+waitms(500)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P210()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+
+LCLICK($x1+600,$y1+160)
+
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// выбрали 210 отдел, очистив маркет и артикула
+
+
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+ELSE
+WAIT(1)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\210\по_товарно_6міс ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAIT(10)
+// заэкспортировали потоварно
+
+
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+WAIT(1)
+wndbump($Pot1)
+WAITMS(300)
+close()
+WAIT(1)
+LOGWRITE("Потоварно 6 мес закручен")
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ПОТОВАРНО_6_МЕС/////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////
+////Формируем ПОТОВАРНО_ИМПОРТ//////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили потоварно за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(200)
+P210()
+WAITMS(200)
+LCLICK($x1+328,$y1+245)
+WAITMS(200)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+LCLICK($x1+300,$y1+375)
+wait(1)
+toclip("34569085")
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(2)
+KEYPRESS(#ENTER)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+LCLICK($_return1+5, $_return2+5)
+WAITMS(500)
+else
+halt
+END_IF  //ВСТАВКа ПКВ ТРЕЙД
+
+LCLICK($x1+600,$y1+160)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// выбрали 210 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+ELSE
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\210\по_товарно_ім ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAIT(10)
+// заэкспортировали потоварно
+end_if
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+WAIT(3)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+WAIT(1)
+wndbump($Pot1)
+WAIT(1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно имп закручен")
+//////////////////////////////////////////////////////////////////////////
+////////////////////////СДЕЛАЛИ ПТВ_ИМП//////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+//Формируем ПОТОВАРНО_6_МЕС _ИМПОРТ//////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_6_begin()
+// c 1 числа
+// выставили потоварно за 6 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(200)
+P210()
+WAITMS(200)
+LCLICK($x1+328,$y1+245)
+WAITMS(200)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+LCLICK($x1+300,$y1+375)
+wait(1)
+toclip("34569085")
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(2)
+KEYPRESS(#ENTER)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+LCLICK($_return1+5, $_return2+5)
+WAITMS(500)
+else
+halt
+END_IF  //ВСТАВКа ПКВ ТРЕЙД
+
+LCLICK($x1+600,$y1+160)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// выбрали 210 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+ELSE
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\210\по_товарно_6міс_ім ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAIT(10)
+// заэкспортировали потоварно
+end_if
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+WAIT(3)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+WAIT(1)
+wndbump($Pot1)
+WAIT(1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно 6 мес имп закручен")
+
+//////////////////	 ///////////////////////////////////////////////
+//////////////// // СФОРМИРОВАЛИ ПТВимп6_МЕС_ИМП        ////////////
+///////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/////////////////////ФОРМИРУЕМ РУХ/////////////////////
+///////////////////////////////////////////////////////
+wndbump($Pot1)
+close()
+close()
+wait(1)
+lclick(286, 82)
+wait(1)
+lclick(286, 82)
+wait(1)
+// открыли рух
+GETSCREEN
+COLORMODE(5)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Рух.bmp"), -1, 80)
+move($_return1, $_return2)
+WAITMS(100)
+else
+LOGWRITE ("НЕ ОТКРЫЛ РУХ")
+END_IF
+$Xv=0
+$Xv=$_return1
+$Yv=0
+$Yv=$_return2
+LOGWRITE ("Xv=",$Xv)
+LOGWRITE ("Yv=",$Yv)
+LCLICK($Xv+198, $Yv+55)
+wait(1)
+GETSCREEN
+COLORMODE(5)
+IF_PICTURE_IN ($xv,$yv,$xv+280,$yv+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if
+// обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($xv+90, $yv+61)
+waitms(500)
+GETSCREEN($xv,$yv,$xv+280,$yv+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xv,$yv,$xv+280,$yv+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили рух за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел поставщика   и товар
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+198,$yv+100)=16777215)
+lclick($xv+198,$yv+100)
+WAITMS(100)
+END_IF     //проверили галку формировать по факту отгрузки
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+19,$yv+100)!16777215)
+lclick($xv+19,$yv+100)
+WAITMS(100)
+END_IF     //проверили галку развернуть по партиям
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+19,$yv+125)!16777215)
+lclick($xv+19,$yv+125)
+WAITMS(100)
+END_IF     //проверили галку развернуть по док
+WAITMS(100)
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+15,$yv+432)=16777215)
+lclick($xv+15,$yv+432)
+WAITMS(100)
+END_IF     //проверили галку не выводить товар без движ
+LCLICK($xv+297,$yv+225)     //выбрать отдел
+WAITMS(100)
+
+P210()
+// выбрали 210 отдел, очистив артикула
+WAITMS(500)
+LCLICK($xv+297,$yv+200)     //выбрать отдел
+WAITMS(100)
+SVN()
+WAITMS(500)
+//выставили маркет
+
+LCLICK($xv+601,$yv+156)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+LCLICK($xv+55,$yv+537)    //закрутили рух
+
+//ждем пока закрутится рух
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Рух_тов.bmp"),-1,80)
+$time = 0
+LOGWRITE ("закрутился")
+ELSE
+LOGWRITE ("не закрутился еще")
+WAIT(4)
+END_IF
+WAIT(1)
+END_CYC
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\210\рух_товару_кількісний ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAIT(10)
+// заэкспортировали рух
+
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(5)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+WAIT(1)
+wndbump($Pot1)
+WAIT(1)
+close()
+WAIT(1)
+LOGWRITE ("рух закручен")
+////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ РУХ/////////////////////////
+////////////////////////////////////////////////////////////////
+
+
+//////////////////Формируем ЗКЗ///////////////////////////////
+/////////////////////////////////////////////////////////////
+
+wndbump($Pot1)
+close()
+close()
+close()
+GETSCREEN
+COLORMODE(6)
+//поиск "отчеты-фин-птв"
+IF_PICTURE_IN (280,14, 466,81, STRCONCAT("Картинки ОП\","Отчеты.bmp"),-1,80)
+$Ox=0
+$Ox=$_return1  +5
+$Oy=0
+$Oy=$_return2  +5
+wait(1)
+LCLICK($Ox, $Oy+5)
+WAIT(1)
+MOVE($Ox, $Oy+90)
+WAIT(1)
+MOVE($Ox+260, $Oy+133)
+WAIT(1)
+LCLICK($Ox+260, $Oy+133)
+WAIT(1)
+Else
+LOGWRITE("НЕ СМОГ ОТКРЫТЬ ЗКЗ")
+halt
+END_IF
+// открыли ЗКЗ
+wait(1)
+GETSCREEN
+COLORMODE(8)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗКЗ.bmp"), -1, 80)
+move($_return1, $_return2)
+WAIT(1)
+else
+LOGWRITE ("НЕ НАШЕЛ ЗКЗ")
+HINTPOPUP("NOOOO", "NOOOO")
+halt
+END_IF
+$Xz=0
+$Xz=$_return1
+$Yz=0
+$Yz=$_return2
+LOGWRITE ("Xz=",$Xz)
+LOGWRITE ("Yz=",$Yz)
+LCLICK($Xz+287, $Yz+74)
+wait(1)
+GETSCREEN($xz,$yz,$xz+280,$yz+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xz,$yz,$xz+280,$yz+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($xz+162, $yz+74)
+waitms(500)
+GETSCREEN($xz,$yz,$xz+280,$yz+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xz,$yz,$xz+280,$yz+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+//выставили зкз за 1 месяц
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+//обнулили отдел поставщика   и товар
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+253)=16777215)
+lclick($xz+35,$yz+253)
+WAITMS(100)
+END_IF     //проверили галку  разв по пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+273)!16777215)
+lclick($xz+35,$yz+273)
+WAITMS(100)
+END_IF     //проверили галку по док
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+293)!16777215)
+lclick($xz+35,$yz+293)
+WAITMS(100)
+END_IF     //проверили галку по товарам
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+313)!16777215)
+lclick($xz+35,$yz+313)
+WAITMS(100)
+END_IF     //проверили галку по зпт
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+333)=16777215)
+lclick($xz+35,$yz+333)
+WAITMS(100)
+END_IF     //проверили галку по только ПО    закр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+33,$yz+354)!16777215)
+lclick($xz+33,$yz+354)
+WAITMS(100)
+END_IF     //проверили галку по незакр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+373)!16777215)
+lclick($xz+35,$yz+373)
+WAITMS(100)
+END_IF     //проверили галку по дате ож пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+445)=16777215)
+lclick($xz+37,$yz+445)
+WAITMS(100)
+END_IF     //основной
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+497)=16777215)
+lclick($xz+37,$yz+497)
+WAITMS(100)
+END_IF     // по зкз
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+542)=16777215)
+lclick($xz+37,$yz+542)
+WAITMS(100)
+END_IF     //к-ву
+LCLICK($xz+288,$yz+140)     //выбрать отдел
+WAITMS(100)
+P210()
+WAITMS(100)
+LCLICK($xz+288,$yz+110)     //выбрать маркет
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+LCLICK($xz+130,$yz+572)    //закрутили зкз
+//ждем пока закрутится отчет
+
+$time = $_time_t + 600       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Список.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+LOGWRITE("заказ закрутился")
+ELSE
+LOGWRITE("заказ еще не закрутился")
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\210\заказ ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAIT(10)
+
+// заэкспортировали
+
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+
+LOGWRITE("заказ закручен")
+
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ заказ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+253)=16777215)
+lclick($xz+35,$yz+253)
+WAITMS(100)
+END_IF     //проверили галку  разв по пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+273)!16777215)
+lclick($xz+35,$yz+273)
+WAITMS(100)
+END_IF     //проверили галку по док
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+293)!16777215)
+lclick($xz+35,$yz+293)
+WAITMS(100)
+END_IF     //проверили галку по товарам
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+313)!16777215)
+lclick($xz+35,$yz+313)
+WAITMS(100)
+END_IF     //проверили галку по зпт
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+333)=16777215)
+lclick($xz+35,$yz+333)
+WAITMS(100)
+END_IF     //проверили галку по только ПО    закр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+33,$yz+354)!16777215)
+lclick($xz+33,$yz+354)
+WAITMS(100)
+END_IF     //проверили галку по незакр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+373)!16777215)
+lclick($xz+35,$yz+373)
+WAITMS(100)
+END_IF     //проверили галку по дате ож пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+445)!16777215)
+lclick($xz+230,$yz+445)
+WAITMS(100)
+END_IF     //ПО ДОВОЗУ
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+497)=16777215)
+lclick($xz+37,$yz+497)
+WAITMS(100)
+END_IF     // по зкз
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+542)=16777215)
+lclick($xz+37,$yz+542)
+WAITMS(100)
+END_IF     //к-ву
+LCLICK($xz+288,$yz+140)     //выбрать отдел
+WAITMS(100)
+P210()
+WAITMS(100)
+LCLICK($xz+288,$yz+110)     //выбрать маркет
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+LCLICK($xz+130,$yz+572)    //закрутили зкз
+//ждем пока закрутится отчет
+
+$time = $_time_t + 600       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Список.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+LOGWRITE("заказ закрутился")
+ELSE
+LOGWRITE("заказ еще не закрутился")
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\210\заказ_по_довозу ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+
+wait(1)
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+LOGWRITE ("210 ГОТОВ")
+////////////////////////  ЗАКРУТИЛИ заказ_по_довозу/////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////210 ГОТОВ///////////////////////////////////
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////// ФОРМИРУЕМ потоварно для 20 отдела   ////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+wndbump($Pot1)
+wait(1)
+close()
+close()
+close()
+
+// открываем отчет потоварно
+потоварно()
+
+// открыли потоварно
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗВИТ.bmp"),-1,70)  //ищем границы отчета
+LCLICK($_return1, $_return2)
+Else
+LOGWRITE("!НЕ найдено период")
+halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X=",$X1)
+logwrite("y=",$Y1)
+$X2=0
+$X2=$X1+657
+$Y2=0
+$Y2=$Y1+698
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки потоварно
+LCLICK($X1+250, $Y1+55)
+wait(1)
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили потоварно за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P20()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+
+
+LCLICK($x1+600,$y1+160)
+
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// выбрали 20 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+ELSE
+WAIT(10)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\20\по_товарно ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+WAIT(3)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+
+close()
+wait(1)
+LOGWRITE("Потоварно закручен")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ПОТОВАРНО  ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+////////////////// ФОРМИРУЕМ потоварно_6мес для 20 отдела   ///////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_6_begin()
+// c 1 числа
+// выставили потоварно за 6 месяц
+waitms(500)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P20()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+
+LCLICK($x1+600,$y1+160)
+
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// выбрали 20 отдел, очистив маркет и артикула
+
+
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+ELSE
+WAIT(1)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\20\по_товарно_6міс ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+
+
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно 6 мес закручен")
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ПОТОВАРНО_6_МЕС/////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////
+////Формируем ПОТОВАРНО_ИМПОРТ//////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили потоварно за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(200)
+P20()
+WAITMS(200)
+LCLICK($x1+328,$y1+245)
+WAITMS(200)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+LCLICK($x1+300,$y1+375)
+wait(1)
+toclip("34569085")
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(2)
+KEYPRESS(#ENTER)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+LCLICK($_return1+5, $_return2+5)
+WAITMS(500)
+else
+halt
+END_IF  //ВСТАВКа ПКВ ТРЕЙД
+
+LCLICK($x1+600,$y1+160)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// выбрали 20 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+ELSE
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\20\по_товарно_ім ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+end_if
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+WAIT(3)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно имп закручен")
+//////////////////////////////////////////////////////////////////////////
+////////////////////////СДЕЛАЛИ ПТВ_ИМП//////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+//Формируем ПОТОВАРНО_6_МЕС _ИМПОРТ//////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_6_begin()
+// c 1 числа
+// выставили потоварно за 6 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+LCLICK($x1+17,$y1+127)
+WAITMS(100)
+END_IF     //проверили галку розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+LCLICK($x1+17,$y1+152)
+WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+LCLICK($x1+17,$y1+477)
+WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+LCLICK($x1+17,$y1+497)
+WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+LCLICK($x1+17,$y1+457)
+WAITMS(100)
+
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+237,$y1+127)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+LCLICK($x1+237,$y1+152)
+WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+WAITMS(100)
+else
+LCLICK($x1+17,$y1+217)
+WAITMS(100)
+END_IF   //проверили галку все активные
+//ПРОВЕРИЛИ ГАЛОЧКИ, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(200)
+P20()
+WAITMS(200)
+LCLICK($x1+328,$y1+245)
+WAITMS(200)
+LCLICK($x1+300,$y1+175)
+WAITMS(500)
+SVN()
+WAITMS(500)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)
+WAITMS(500)
+LCLICK($x1+300,$y1+375)
+wait(1)
+toclip("34569085")
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(2)
+KEYPRESS(#ENTER)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+LCLICK($_return1+5, $_return2+5)
+WAITMS(500)
+else
+halt
+END_IF  //ВСТАВКа ПКВ ТРЕЙД
+
+LCLICK($x1+600,$y1+160)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// выбрали 20 отдел, очистив маркет и артикула
+LCLICK($x1+84,$y1+667)
+//ждем пока закрутится потоварно
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Сформ.bmp"),-1,90)
+$time = 0
+ELSE
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\20\по_товарно_6міс_ім ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+end_if
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"),-1,90)
+WAIT(3)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+WAIT(1)
+LOGWRITE("Потоварно 6 мес имп закручен")
+
+//////////////////	 ///////////////////////////////////////////////
+//////////////// // СФОРМИРОВАЛИ ПТВимп6_МЕС_ИМП        ////////////
+///////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/////////////////////ФОРМИРУЕМ РУХ/////////////////////
+///////////////////////////////////////////////////////
+wndbump($Pot1)
+close()
+close()
+wait(1)
+lclick(286, 82)
+wait(1)
+lclick(286, 82)
+wait(1)
+// открыли рух
+GETSCREEN
+COLORMODE(5)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Рух.bmp"), -1, 80)
+move($_return1, $_return2)
+WAITMS(100)
+else
+LOGWRITE ("НЕ ОТКРЫЛ РУХ")
+END_IF
+$Xv=0
+$Xv=$_return1
+$Yv=0
+$Yv=$_return2
+LOGWRITE ("Xv=",$Xv)
+LOGWRITE ("Yv=",$Yv)
+LCLICK($Xv+198, $Yv+55)
+wait(1)
+GETSCREEN
+COLORMODE(5)
+IF_PICTURE_IN ($xv,$yv,$xv+280,$yv+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if
+// обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($xv+90, $yv+61)
+waitms(500)
+GETSCREEN($xv,$yv,$xv+280,$yv+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xv,$yv,$xv+280,$yv+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+// выставили рух за 1 месяц
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел поставщика   и товар
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+198,$yv+100)=16777215)
+lclick($xv+198,$yv+100)
+WAITMS(100)
+END_IF     //проверили галку формировать по факту отгрузки
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+19,$yv+100)!16777215)
+lclick($xv+19,$yv+100)
+WAITMS(100)
+END_IF     //проверили галку развернуть по партиям
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+19,$yv+125)!16777215)
+lclick($xv+19,$yv+125)
+WAITMS(100)
+END_IF     //проверили галку развернуть по док
+WAITMS(100)
+GETSCREEN($xv,$yv,$xv+700,$yv+700)
+COLORMODE(6)
+IF(pxl($xv+15,$yv+432)=16777215)
+lclick($xv+15,$yv+432)
+WAITMS(100)
+END_IF     //проверили галку не выводить товар без движ
+LCLICK($xv+297,$yv+225)     //выбрать отдел
+WAITMS(100)
+
+P20()
+// выбрали 20 отдел, очистив артикула
+WAITMS(500)
+LCLICK($xv+297,$yv+200)     //выбрать отдел
+WAITMS(100)
+SVN()
+WAITMS(500)
+//выставили маркет
+
+LCLICK($xv+601,$yv+156)
+// очистка артикулов !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+LCLICK($xv+55,$yv+537)    //закрутили рух
+
+//ждем пока закрутится рух
+$time = $_time_t + 1200       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Рух_тов.bmp"),-1,80)
+$time = 0
+LOGWRITE ("закрутился")
+ELSE
+LOGWRITE ("не закрутился еще")
+WAIT(4)
+END_IF
+WAIT(1)
+END_CYC
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\20\рух_товару_кількісний ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали рух
+
+
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(5)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+WAITMS(300)
+LOGWRITE ("рух закручен")
+////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ РУХ/////////////////////////
+////////////////////////////////////////////////////////////////
+
+
+//////////////////Формируем ЗКЗ///////////////////////////////
+/////////////////////////////////////////////////////////////
+
+wndbump($Pot1)
+close()
+close()
+close()
+GETSCREEN
+COLORMODE(6)
+//поиск "отчеты-фин-птв"
+IF_PICTURE_IN (280,14, 466,81, STRCONCAT("Картинки ОП\","Отчеты.bmp"),-1,80)
+$Ox=0
+$Ox=$_return1  +5
+$Oy=0
+$Oy=$_return2  +5
+wait(1)
+LCLICK($Ox, $Oy+5)
+WAIT(1)
+MOVE($Ox, $Oy+90)
+WAIT(1)
+MOVE($Ox+260, $Oy+133)
+WAIT(1)
+LCLICK($Ox+260, $Oy+133)
+WAIT(1)
+Else
+LOGWRITE("НЕ СМОГ ОТКРЫТЬ ЗКЗ")
+halt
+END_IF
+// открыли ЗКЗ
+wait(1)
+GETSCREEN
+COLORMODE(8)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗКЗ.bmp"), -1, 80)
+move($_return1, $_return2)
+WAIT(1)
+else
+LOGWRITE ("НЕ НАШЕЛ ЗКЗ")
+HINTPOPUP("NOOOO", "NOOOO")
+halt
+END_IF
+$Xz=0
+$Xz=$_return1
+$Yz=0
+$Yz=$_return2
+LOGWRITE ("Xz=",$Xz)
+LOGWRITE ("Yz=",$Yz)
+LCLICK($Xz+287, $Yz+74)
+wait(1)
+GETSCREEN($xz,$yz,$xz+280,$yz+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xz,$yz,$xz+280,$yz+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+waitms(500)
+lclick($_return1+10, $_return2+5)
+waitms(500)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+date_end()
+Else
+LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($xz+162, $yz+74)
+waitms(500)
+GETSCREEN($xz,$yz,$xz+280,$yz+280)
+COLORMODE(5)
+IF_PICTURE_IN ($xz,$yz,$xz+280,$yz+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+waitms(500)
+LCLICK($_return1, $_return2)
+LCLICK($_return1, $_return2-148)
+waitms(500)
+Else
+LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+date_begin()
+// c 1 числа
+//выставили зкз за 1 месяц
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+KEYPRESS(#TAB)
+waitms(100)
+KEYPRESS(#ENTER)
+waitms(100)
+//обнулили отдел поставщика   и товар
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+253)=16777215)
+lclick($xz+35,$yz+253)
+WAITMS(100)
+END_IF     //проверили галку  разв по пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+273)!16777215)
+lclick($xz+35,$yz+273)
+WAITMS(100)
+END_IF     //проверили галку по док
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+293)!16777215)
+lclick($xz+35,$yz+293)
+WAITMS(100)
+END_IF     //проверили галку по товарам
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+313)!16777215)
+lclick($xz+35,$yz+313)
+WAITMS(100)
+END_IF     //проверили галку по зпт
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+333)=16777215)
+lclick($xz+35,$yz+333)
+WAITMS(100)
+END_IF     //проверили галку по только ПО    закр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+33,$yz+354)!16777215)
+lclick($xz+33,$yz+354)
+WAITMS(100)
+END_IF     //проверили галку по незакр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+373)!16777215)
+lclick($xz+35,$yz+373)
+WAITMS(100)
+END_IF     //проверили галку по дате ож пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+445)=16777215)
+lclick($xz+37,$yz+445)
+WAITMS(100)
+END_IF     //основной
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+497)=16777215)
+lclick($xz+37,$yz+497)
+WAITMS(100)
+END_IF     // по зкз
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+542)=16777215)
+lclick($xz+37,$yz+542)
+WAITMS(100)
+END_IF     //к-ву
+LCLICK($xz+288,$yz+140)     //выбрать отдел
+WAITMS(100)
+P20()
+WAITMS(100)
+LCLICK($xz+288,$yz+110)     //выбрать маркет
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+
+
+
+LCLICK($xz+130,$yz+572)    //закрутили зкз
+//ждем пока закрутится отчет
+
+$time = $_time_t + 600       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Список.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+LOGWRITE("заказ закрутился")
+ELSE
+LOGWRITE("заказ еще не закрутился")
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\20\заказ ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали
+
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+close()
+
+LOGWRITE("заказ закручен")
+
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ заказ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+253)=16777215)
+lclick($xz+35,$yz+253)
+WAITMS(100)
+END_IF     //проверили галку  разв по пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+273)!16777215)
+lclick($xz+35,$yz+273)
+WAITMS(100)
+END_IF     //проверили галку по док
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+293)!16777215)
+lclick($xz+35,$yz+293)
+WAITMS(100)
+END_IF     //проверили галку по товарам
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+313)!16777215)
+lclick($xz+35,$yz+313)
+WAITMS(100)
+END_IF     //проверили галку по зпт
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+333)=16777215)
+lclick($xz+35,$yz+333)
+WAITMS(100)
+END_IF     //проверили галку по только ПО    закр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+33,$yz+354)!16777215)
+lclick($xz+33,$yz+354)
+WAITMS(100)
+END_IF     //проверили галку по незакр
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+35,$yz+373)!16777215)
+lclick($xz+35,$yz+373)
+WAITMS(100)
+END_IF     //проверили галку по дате ож пост
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+445)!16777215)
+lclick($xz+230,$yz+445)
+WAITMS(100)
+END_IF     //ПО ДОВОЗУ
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+497)=16777215)
+lclick($xz+37,$yz+497)
+WAITMS(100)
+END_IF     // по зкз
+GETSCREEN($xz,$yz,$xz+700,$yz+700)
+COLORMODE(6)
+IF(pxl($xz+37,$yz+542)=16777215)
+lclick($xz+37,$yz+542)
+WAITMS(100)
+END_IF     //к-ву
+LCLICK($xz+288,$yz+140)     //выбрать отдел
+WAITMS(100)
+P20()
+WAITMS(100)
+LCLICK($xz+288,$yz+110)     //выбрать маркет
+WAITMS(500)
+SVN()
+WAITMS(500)
+
+LCLICK($xz+130,$yz+572)    //закрутили зкз
+//ждем пока закрутится отчет
+
+$time = $_time_t + 600       //таймер 20 мин
+WHILE($time > $_time_t)
+GETSCREEN
+colormode(6)
+IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","Список.bmp"),-1,90)
+$time = 0
+lclick($_return1+10, $_return2+10)
+LOGWRITE("заказ закрутился")
+ELSE
+LOGWRITE("заказ еще не закрутился")
+WAIT(5)
+END_IF
+END_CYC
+wait(1)
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Data_Base\20\заказ_по_довозу ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+wait(1)
+$check1 = 0
+WHILE($check1 = 0)
+GETSCREEN
+colormode(6)
+IF_picture_IN(911,557,1001,590,STRCONCAT("Картинки ОП\","Cancel.bmp"))
+WAIT(1)
+else
+$check1 = 1
+WAIT(10)
+END_IF
+END_CYC
+//проверили что уже заэкспортировался
+wndbump($Pot1)
+wait(1)
+close()
+LOGWRITE ("20 ГОТОВ")
+////////////////////////  ЗАКРУТИЛИ заказ_по_довозу/////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////20 ГОТОВ///////////////////////////////////
+
+HALT

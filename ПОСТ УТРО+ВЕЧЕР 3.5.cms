@@ -1,0 +1,59 @@
+﻿///////////////////////////////////////Поступления//////////////////////////
+
+
+
+//ПОТОК1========================================================================
+THREAD(timeWait, 1)
+   #include "PotamusLib.cms"
+   WHILE(($_time_h ! 21)|($_time_m ! 28)) // ждем 21:30
+      WAIT(15)
+   END_CYC
+   WAIT(2)
+   KEYPRESS(#ENTER)
+   WAIT(1)
+   send()
+   LOGWRITE("Поступления отправлены по времени")
+END_THREAD
+
+
+
+//ПОТОК2========================================================================
+//THREAD(screenWait, 1)
+//   #include "PotamusLib.cms"
+//   moz()
+//   wait(3)
+//   LCLICK(43, 229)
+//   wait(1)
+//   $check = 0
+//   WHILE($check = 0)
+//      GETSCREEN
+//      IF_PIXEL_IN(200,150, 250,616, 10549247, 4382463, 8908027)
+//         $check = 1
+//         LCLICK($_return1, $_return2)
+//         WAITMS(100)
+//         LOGWRITE("Пришел запрос")
+//         send()
+//         LOGWRITE("Поступления отправлены по запросу")
+//      ELSE
+//         WAIT(5)
+//      END_IF
+//   END_CYC
+//END_THREAD
+
+
+
+//ПОТОК3========================================================================
+THREAD(Morning, 1)
+   #include "PotamusLib.cms"
+   #include "Поступления.cms"
+   #include "Оп.cms"
+   WHILE(($_time_h ! 07)|($_time_m ! 02)) // ждем 06:30
+      WAIT(15)
+   END_CYC
+   WAIT(1)
+   KEYPRESS(#ENTER)
+   WAIT(1)
+   MORNING()
+   LOGWRITE("ГОТОВО")
+//   оп()
+END_THREAD

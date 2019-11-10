@@ -1,0 +1,1865 @@
+﻿
+//---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!выставить год месяц перед каждой прогрузкой////
+SUB(Месяц)
+KEYPRESS(#0)
+WAITMS(500)
+KEYPRESS(#2)
+END_SUB
+
+SUB(Год)
+KEYPRESS(#2)
+WAITMS(50)
+KEYPRESS(#0)
+WAITMS(50)
+KEYPRESS(#1)
+WAITMS(50)
+KEYPRESS(#7)
+WAITMS(50)
+END_SUB 
+//---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!выставить год месяц перед каждой прогрузкой////
+
+SUB(Комплексная)
+KEYPRESS(#2)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+SUB(Опт1)
+KEYPRESS(#3)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+SUB(Опт2)
+KEYPRESS(#4)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+SUB(Уцененная)
+KEYPRESS(#5)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+SUB(Перс_Офис)
+KEYPRESS(#7)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+SUB(Перс_Опт)
+KEYPRESS(#1)
+WAITMS(50)
+KEYPRESS(#0)
+WAITMS(50)
+KEYPRESS(#0)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+SUB(Комп_пост)
+KEYPRESS(#1)
+WAITMS(50)
+KEYPRESS(#0)
+WAITMS(50)
+KEYPRESS(#1)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+SUB(Аут)
+KEYPRESS(#5)
+WAITMS(50)
+KEYPRESS(#0)
+WAITMS(50)
+KEYPRESS(#5)
+WAITMS(50)
+KEYPRESS(#ENTER)
+WAITMS(50)
+END_SUB
+
+SUB(SVR)
+KEYPRESS(#5)
+waitms(50)
+KEYPRESS(#0)
+waitms(50)
+KEYPRESS(#1)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+END_SUB
+SUB(SFR)
+KEYPRESS(#5)
+waitms(50)
+KEYPRESS(#0)
+waitms(50)
+KEYPRESS(#2)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+END_SUB
+SUB(SVN)
+KEYPRESS(#5)
+waitms(50)
+KEYPRESS(#0)
+waitms(50)
+KEYPRESS(#3)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+END_SUB
+
+
+SUB(скидки) // подпрограмма
+   GETSCREEN
+   COLORMODE(6)         //поиск "отчеты-контрольные - скидки"
+
+IF_PICTURE_IN (0,0, 600,100, STRCONCAT("Картинки ОП\","Отчеты.bmp"),-1,80)
+   WAITMS(100)
+END_IF
+   
+      $Ox=0
+      $Ox=$_return1  +5
+      $Oy=0
+      $Oy=$_return2  +5
+      
+      wait(1)
+      LCLICK($Ox, $Oy+5)
+      WAIT(1)
+      MOVE($Ox, $Oy+310)
+      WAIT(1)
+      MOVE($Ox+260, $Oy+400)
+      WAIT(1)
+      LCLICK($Ox+260, $Oy+400)
+      WAITMS(500)
+      MOVE($Ox+720, $Oy+400)
+      WAITMS(500)
+      LCLICK($Ox+720, $Oy+400)
+      WAITMS(500)
+   Else
+      LOGWRITE("НЕ СМОГ ОТКРЫТЬ скидки")
+      halt
+   END_IF
+END_SUB
+
+////////////////// закрытие сформированных отчетов//////////// 
+sub(close)
+   wndbump($Pot1)
+   WAITMS(100)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#F4)
+KEYUP (#CTRL)   
+END_SUB
+
+//////////////////// выбор окна
+SUB(HWN)
+WAITMS(100) 
+GETSCREEN
+colormode(6)
+//БЛОК1   поиск ярлыка потамуса,присвоение HWND
+IF_PICTURE_IN (60,1000, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Pot1.bmp"),-1,80)
+   LCLICK($_return1+5, $_return2+5)
+Else
+   LOGWRITE ("Не найдено ПОТАМУС")
+   halt
+END_IF
+$P=0
+$P=$_return1
+$P1=0
+$P1=$_return2
+WAIT(1)
+move($P,$P1-30)
+WAIT(1)
+LCLICK($P,$P1-50)
+WAIT(1)      //левое окно из трех Потамусов
+$Pot1=0
+$Pot1=hget(61,588)
+LOGWRITE ("Potamus1=",$Pot1)
+//присвоили переменные с кодами всех окон Потамуса
+wndbump($Pot1)
+wait(1)
+END_SUB
+//////////////////Присвоили переменным код окон  потамуса////////////
+
+
+//=============================================
+
+LOGCLEAR
+
+HWN()
+//присвоили переменные с кодами  окон Потамуса
+// открываем отчет 
+close()
+close()
+close()
+close()
+скидки()
+
+
+// открыли отчет
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Отчет.bmp"),-1,70)  //ищем границы отчета
+Else
+   LOGWRITE("!НЕ найдено открытый отчет скидки")
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X=",$X1)
+logwrite("y=",$Y1)
+$X2=0
+$X2=$X1+657
+$Y2=0
+$Y2=$Y1+698
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки потоварно
+LCLICK($X1+251, $Y1+88)
+wait(1)
+GETSCREEN($x1,$y1,$x1+350,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+350,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   KEYPRESS(#right)
+   waitms(100)
+Месяц()
+KEYPRESS(#right)
+waitms(100)
+Год()
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#0)
+waitms(50)
+KEYPRESS(#1)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+Else
+   LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+88)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+KEYPRESS(#0)
+waitms(50)
+KEYPRESS(#1)
+waitms(50)
+KEYPRESS(#right)
+waitms(100)
+
+Месяц()
+
+KEYPRESS(#right)
+waitms(100)
+
+Год()
+
+waitms(100)
+KEYPRESS(#TAB)
+waitms(50)
+KEYPRESS(#TAB)
+waitms(50)
+KEYPRESS(#TAB)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(50)
+KEYPRESS(#TAB)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(50)
+KEYPRESS(#TAB)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(50)
+KEYPRESS(#TAB)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(50)
+//обнулили маркет отдел скидку
+END_IF   
+LCLICK($x1+300,$y1+177)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+SVR()
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+
+Аут()
+
+LCLICK($x1+65,$y1+600)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-АУТ ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-АУТ закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Комп_пост()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-Компенсация поставщика ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-Компенсация поставщика закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Комплексная()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-Комплексная ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-Комплексная закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Опт1()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-Опт1 ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-Опт1 закручен")
+//////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Опт2()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-Опт2 ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-Опт2 закручен")
+////////////////// /////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Перс_Опт()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-Персональная цена опт ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-Персональная цена опт закручен")
+///////////////////////////////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Перс_Офис()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-Персональная цена офис ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-Персональная цена офис закручен")
+///////////////////////////////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Уцененная()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVR-Уцененная ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVR-Уцененная закручен")
+///////////////////////////////////////////////////////////////////////
+/////===========---------SVR ЗАКРУЧЕН-----------=========/////////////
+//////////////////////////////////////////////////////////////////////
+wait(1)
+LCLICK($x1+300,$y1+177)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+SFR()
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Аут()
+
+LCLICK($x1+65,$y1+600)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-АУТ ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-АУТ закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Комп_пост()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-Компенсация поставщика ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-Компенсация поставщика закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Комплексная()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-Комплексная ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-Комплексная закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Опт1()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-Опт1 ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-Опт1 закручен")
+//////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Опт2()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-Опт2 ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-Опт2 закручен")
+////////////////// /////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Перс_Опт()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-Персональная цена опт ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-Персональная цена опт закручен")
+///////////////////////////////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Перс_Офис()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-Персональная цена офис ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-Персональная цена офис закручен")
+///////////////////////////////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Уцененная()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SFR-Уцененная ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SFR-Уцененная закручен")
+///////////////////////////////////////////////////////////////////////
+/////===========---------SFR ЗАКРУЧЕН-----------=========/////////////
+/////////////////////////////////////////////////////////////////////
+wait(1)
+LCLICK($x1+300,$y1+177)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+KEYPRESS(#left)
+waitms(50)
+SVN()
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Аут()
+
+LCLICK($x1+65,$y1+600)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-АУТ ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-АУТ закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Комп_пост()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-Компенсация поставщика ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-Компенсация поставщика закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Комплексная()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-Комплексная ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-Комплексная закручен")
+//////////////////
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Опт1()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-Опт1 ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-Опт1 закручен")
+//////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Опт2()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-Опт2 ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-Опт2 закручен")
+////////////////// /////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Перс_Опт()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-Персональная цена опт ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-Персональная цена опт закручен")
+///////////////////////////////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Перс_Офис()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-Персональная цена офис ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-Персональная цена офис закручен")
+///////////////////////////////////////////////////////////////////////
+waitms(500)
+LCLICK($x1+300,$y1+237)
+waitms(500)
+KEYPRESS(#left)
+waitms(100)
+KEYPRESS(#left)
+waitms(100)
+//выбрать тип уценки
+
+Уцененная()
+
+LCLICK($x1+65,$y1+595)
+
+//ждем пока закрутится потоварно
+$time = $_time_t + 180       //таймер 3 мин
+WHILE($time > $_time_t)
+   GETSCREEN
+   colormode(6)
+   IF_picture_IN(0,100, $_xmax,$_ymax,STRCONCAT("Картинки ОП\","скидка.bmp"),-1,90)
+      $time = 0
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#E)
+   WAITMS (50)
+   KEYUP (#E)
+   KEYUP (#CTRL)   
+   ELSE
+      WAIT(5)
+   END_IF
+END_CYC
+wait(1)
+
+
+   toclip("C:\Скидки\SVN-Уцененная ")
+   WAITMS(50)
+   KEYDOWN (#CTRL)
+   WAITMS (50)
+   KEYDOWN (#V)
+   WAITMS (50)
+   KEYUP (#V)
+   KEYUP (#CTRL)
+   (#BACKSPACE)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   WAITMS(500)
+   KEYPRESS(#LEFT)
+   WAITMS(500)
+   KEYPRESS(#ENTER)
+   wait(1)
+
+
+wait(3)
+wndbump($Pot1)
+wait(2)
+LCLICK(5,101)
+wait(1)
+LCLICK($x1+720,$y1+300)
+wait(1)
+close()
+
+LOGWRITE("SVN-Уцененная закручен")
+///////////////////////////////////////////////////////////////////////
+/////===========---------SVN ЗАКРУЧЕН-----------=========/////////////
+//////////////////////////////////////////////////////////////////////
+
+LOGWRITE("ВСЕ")
+
+
+
+
+
+////=============================================
+
+
+//GOTO(начало)
+
+
+////=============================================
+
+
+////=============================================
+
+//начало:
+
+
+////=============================================
+
+
+
+
+
+
+
+
+
+
+
+halt

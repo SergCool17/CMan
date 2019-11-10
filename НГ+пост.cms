@@ -1,0 +1,2847 @@
+﻿///////////////////////////////////////НГ Поступления//////////////////////////
+LOGCLEAR
+
+#include "PotamusLib.cms"
+//#include "Переоткрытие Потамус.cms"
+
+
+
+//Период2018
+SUB(10Beg)
+   KEYPRESS(#0)
+   WAITMS(500)
+   KEYPRESS(#1)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#1)
+   WAITMS(500)
+   KEYPRESS(#0)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+END_SUB
+SUB(10End)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+END_SUB
+SUB(20_310Beg)
+   KEYPRESS(#0)
+   WAITMS(500)
+   KEYPRESS(#1)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#1)
+   WAITMS(500)
+   KEYPRESS(#1)
+   WAITMS(500)
+END_SUB
+SUB(PostBeg)
+   KEYPRESS(#0)
+   WAITMS(500)
+   KEYPRESS(#1)
+   WAITMS(500)
+END_SUB
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+////////////////// ФОРМИРУЕМ Поступления для НГ   ////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//==============================================================================
+
+//WHILE(($_time_h ! 6)|($_time_m ! 11)) // ждем 1:00
+//   WAIT(5)
+//END_CYC
+
+
+
+SUB(MORNING)
+begin:
+
+reopen()
+
+wait(25)
+
+
+
+
+//GOTO(пост)
+
+
+//==============================================================================
+
+LOGWRITE("Таймер сработал. запуск")
+
+
+
+
+HWN()
+//присвоили переменные с кодами всех окон Потамуса
+wndbump($Pot1)
+WAITMS(100)
+close()
+close()
+close()
+
+
+//GOTO(чеки)
+
+
+
+//GOTO(2)
+
+
+
+// открываем отчет поступлений
+пост()
+
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Отчет.bmp"),-1,70)  //ищем границы отчета
+   LOGWRITE("+найден открытый отчет поступления")
+Else
+   LOGWRITE("1НЕ найден открытый отчет поступления")
+   screenshot
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X1=",$X1)
+logwrite("y1=",$Y1)
+$X2=0
+$X2=$X1+400
+$Y2=0
+$Y2=$Y1+500
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки поступлений
+
+wait(1)
+LCLICK($X1+100, $Y1+30)
+wait(1)
+///Вкладка ДЕТАЛЬНО
+
+
+
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   10End()
+Else
+   LOGWRITE("2НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("3НЕ СМОГ найти день начала-сегодня")
+end_if
+10Beg()
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+351, $Y1+258)
+waitms(500)
+LCLICK($X1+351, $Y1+308)
+waitms(500)
+LCLICK($X1+351, $Y1+335)
+waitms(500)
+LCLICK($X1+270, $Y1+416)
+waitms(500)
+//выберем отдел
+LCLICK($X1+300, $Y1+308)
+waitms(500)
+
+P10()
+
+//выберем деп
+waitms(500)
+LCLICK($X1+300, $Y1+335)
+waitms(500)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#PAGEUP)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Users\s.kuleshov\Desktop\Запросы\НГ\исх\выторг2018 ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Постуления за 2018 закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ выторг2018  ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////Крутим минус_год///////////////////////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   10End()
+   
+   //2018
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+   
+Else
+   LOGWRITE("4НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+10Beg()
+
+//2017
+
+
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+
+
+waitms(500)
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Users\s.kuleshov\Desktop\Запросы\НГ\исх\минус_год ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Постуления минус_год закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ минус_год  ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+////////////////////////Крутим минус_2года///////////////////////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   10End()
+   
+   //2017
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+   
+Else
+   LOGWRITE("5НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+10Beg()
+
+//2016
+
+KEYPRESS(#DOWN)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+
+
+waitms(500)
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Users\s.kuleshov\Desktop\Запросы\НГ\исх\минус_2года ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Постуления минус_2года закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ минус_2года  ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////Крутим выторг за день///////////////////////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   10End()
+   
+   
+   
+   
+Else
+   LOGWRITE("6НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("7НЕ СМОГ найти день начала-сегодня")
+end_if
+
+10End()
+
+
+
+waitms(500)
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Users\s.kuleshov\Desktop\Запросы\НГ\исх\выторг ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Постуления выторг закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ выторг за день  //////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+////////////ФОРМИРУЕМ ТЕКУЩИЕ  для поступлений /////////////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   
+Else
+   LOGWRITE("8НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+PostBeg()
+
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+351, $Y1+258)
+waitms(500)
+LCLICK($X1+351, $Y1+308)
+waitms(500)
+LCLICK($X1+351, $Y1+335)
+waitms(500)
+//галка поддепартамент
+LCLICK($X1+21, $Y1+414)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Поступления\текущий ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Поступления Текущие закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ТЕКУЩИЕ//////  ///////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+////////////ФОРМИРУЕМ минус_год  для поступлений /////////////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+   
+Else
+   LOGWRITE("9НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+PostBeg()
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+351, $Y1+258)
+waitms(500)
+LCLICK($X1+351, $Y1+308)
+waitms(500)
+LCLICK($X1+351, $Y1+335)
+waitms(500)
+//галка поддепартамент
+LCLICK($X1+21, $Y1+414)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Поступления\минус_год ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Поступления минус_год закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ минус_год//////  ///////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+////////////ФОРМИРУЕМ минус_2года  для поступлений /////////////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+Else
+   LOGWRITE("10НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("11НЕ СМОГ найти день начала-сегодня")
+end_if
+
+PostBeg()
+KEYPRESS(#RIGHT)
+WAITMS(500),
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+351, $Y1+258)
+waitms(500)
+LCLICK($X1+351, $Y1+308)
+waitms(500)
+LCLICK($X1+351, $Y1+335)
+waitms(500)
+//галка поддепартамент
+LCLICK($X1+21, $Y1+414)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Поступления\минус_2года ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Поступления минус_2года закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ минус_2года///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/////////////////ФОРМИРУЕМ минус_месяц  для поступлений //////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+   //только 01.2019
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+Else
+   LOGWRITE("12НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("13НЕ СМОГ найти день начала-сегодня")
+end_if
+
+PostBeg()
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+//только 01.2019
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+351, $Y1+258)
+waitms(500)
+LCLICK($X1+351, $Y1+308)
+waitms(500)
+LCLICK($X1+351, $Y1+335)
+waitms(500)
+//галка поддепартамент
+LCLICK($X1+21, $Y1+414)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Поступления\минус_месяц ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Поступления минус_месяц закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ минус_месяц///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+//ДЛЯ МАКРОСА ПОСТУПЛЕНИЙ
+
+
+
+
+
+
+
+
+
+
+
+пост()
+
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Отчет.bmp"),-1,70)  //ищем границы отчета
+   LOGWRITE("+найден открытый отчет поступления")
+Else
+   LOGWRITE("1НЕ найден открытый отчет поступления")
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X1=",$X1)
+logwrite("y1=",$Y1)
+$X2=0
+$X2=$X1+400
+$Y2=0
+$Y2=$Y1+500
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки поступлений
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////ФОРМИРУЕМ Поступления за 1 день //////////////////////
+wait(1)
+LCLICK($X1+30, $Y1+30)
+wait(1)
+///Вкладка СТАнДАРТ
+
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   
+Else
+   LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+10End()
+
+
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+335, $Y1+258)
+waitms(500)
+LCLICK($X1+19, $Y1+329)
+waitms(500)
+LCLICK($X1+171, $Y1+415)
+waitms(500)
+
+
+//сформировать
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Post\Поступления_маркеты_день ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Поступления за день закручены")
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////  ЗАКРУТИЛИ день/////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+/////////////////ФОРМИРУЕМ Поступления за месяц по маркетам////////////////////
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   
+Else
+   LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+PostBeg()
+
+
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+335, $Y1+258)
+waitms(500)
+LCLICK($X1+19, $Y1+329)
+waitms(500)
+LCLICK($X1+171, $Y1+415)
+waitms(500)
+
+
+//сформировать
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Post\Поступления_маркеты ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Поступления за день закручены")
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////  ЗАКРУТИЛИ день/////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////  ЗАКРУТИМ ПРОДУКТЫ//////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+close()
+close()
+пост()
+
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Отчет.bmp"),-1,70)  //ищем границы отчета
+   LOGWRITE("+найден открытый отчет поступления")
+Else
+   LOGWRITE("НЕ найден открытый отчет поступления")
+   screenshot
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X1=",$X1)
+logwrite("y1=",$Y1)
+$X2=0
+$X2=$X1+400
+$Y2=0
+$Y2=$Y1+500
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки поступлений
+
+wait(1)
+LCLICK($X1+100, $Y1+30)
+wait(1)
+///Вкладка ДЕТАЛЬНО
+
+
+
+
+//открыть дату окончания
+MOVE($X1+282, $Y1+95)
+waitms(100)
+LCLICK($X1+282, $Y1+95)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   10End()
+Else
+   LOGWRITE("2НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+90, $Y1+95)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("3НЕ СМОГ найти день начала-сегодня")
+end_if
+PostBeg()
+
+//обнулить отдел, деп, подставить галку поддеп
+waitms(500)
+LCLICK($X1+351, $Y1+258)
+waitms(500)
+LCLICK($X1+351, $Y1+308)
+waitms(500)
+LCLICK($X1+351, $Y1+335)
+waitms(500)
+LCLICK($X1+155, $Y1+392)
+waitms(500)
+//выберем отдел
+LCLICK($X1+300, $Y1+308)
+waitms(500)
+
+P100()
+
+//выберем деп
+waitms(500)
+LCLICK($X1+300, $Y1+335)
+waitms(500)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#PAGEUP)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+MOVE($x1+50,$y1+450)
+waitms(500)
+LCLICK($x1+50,$y1+450)
+wait(1)
+
+LoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Post\Продукты ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Продукты закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ПРОДУКТЫ////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////закрутим склад по Девилону////////////////////
+
+потоварно()
+// открыли потоварно
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗВИТ.bmp"),-1,70)  //ищем границы отчета
+   LCLICK($_return1, $_return2)
+Else
+   LOGWRITE("!НЕ найдено период")
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X=",$X1)
+logwrite("y=",$Y1)
+$X2=0
+$X2=$X1+657
+$Y2=0
+$Y2=$Y1+698
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки потоварно
+LCLICK($X1+250, $Y1+55)
+wait(1)
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   
+Else
+   LOGWRITE("14НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+Postbeg()
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#0)
+WAITMS(500)
+KEYPRESS(#1)
+WAITMS(500)
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#2)
+WAITMS(500)
+KEYPRESS(#0)
+WAITMS(500)
+KEYPRESS(#1)
+WAITMS(500)
+KEYPRESS(#8)
+WAITMS(500)
+
+// c 1 января   2018
+
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x1+150,$y1+150)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+102)=16777215)
+   LCLICK($x1+17,$y1+102)
+   WAITMS(100)
+END_IF     //проверили галку, поставили по маркетам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)=16777215)
+   LCLICK($x1+17,$y1+127)
+   WAITMS(100)
+END_IF     //проверили галку, поставили розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+   LCLICK($x1+17,$y1+152)
+   WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+   LCLICK($x1+17,$y1+477)
+   WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+   LCLICK($x1+17,$y1+497)
+   WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+457)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+127)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+152)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+217)
+   WAITMS(100)
+END_IF   //проверили галку все активные
+
+
+//выберем деп  свята
+waitms(500)
+LCLICK($X1+330, $y1+569)
+waitms(500)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#PAGEUP)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+
+//ПРОВЕРИЛИ ГАЛОЧКИ, ВЫСТАВИЛИ ДЕП, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P10()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+375)
+wait(3)
+toclip("59848808")
+waitms(100)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(1)
+KEYPRESS(#ENTER)
+WAIT(1)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+   LCLICK($_return1+5, $_return2+5)
+   WAITMS(500)
+else
+   WAIT(10)
+   IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+      LCLICK($_return1+5, $_return2+5)
+      WAITMS(500)
+   else
+      halt
+   END_IF
+END_IF  //ВСТАВКА ДЕВИЛОН
+
+LCLICK($x1+84,$y1+667)    //сформировать
+
+LoadWait()
+//ждем пока закрутится потоварно
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Users\s.kuleshov\Desktop\Запросы\НГ\исх\ДевилонПТВ ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(5)
+
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+close()
+wait(1)
+LOGWRITE("Склад девилон закручен")
+/////////////////////////////////////////////////////////////////////////////
+///////////////////////////Девилон закручен//////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+2:
+///////////////////////////////закрутим склад по Витусу///////////////////
+
+потоварно()
+// открыли потоварно
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗВИТ.bmp"),-1,70)  //ищем границы отчета
+   LCLICK($_return1, $_return2)
+Else
+   LOGWRITE("!НЕ найдено период")
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X=",$X1)
+logwrite("y=",$Y1)
+$X2=0
+$X2=$X1+657
+$Y2=0
+$Y2=$Y1+698
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки потоварно
+LCLICK($X1+250, $Y1+55)
+wait(1)
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   
+Else
+   LOGWRITE("14НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+10End()
+
+
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x1+150,$y1+150)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+102)=16777215)
+   LCLICK($x1+17,$y1+102)
+   WAITMS(100)
+END_IF     //проверили галку, поставили по маркетам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)!16777215)
+   LCLICK($x1+17,$y1+127)
+   WAITMS(100)
+END_IF     //проверили галку, поставили розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+   LCLICK($x1+17,$y1+152)
+   WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+   LCLICK($x1+17,$y1+477)
+   WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+   LCLICK($x1+17,$y1+497)
+   WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+457)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+127)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+152)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+217)
+   WAITMS(100)
+END_IF   //проверили галку все активные
+
+
+//выберем деп  свята
+waitms(500)
+LCLICK($X1+330, $y1+569)
+waitms(500)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#PAGEUP)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+
+//ПРОВЕРИЛИ ГАЛОЧКИ, ВЫСТАВИЛИ ДЕП, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P10()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+375)
+wait(3)
+toclip("17358540")
+waitms(100)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(1)
+KEYPRESS(#ENTER)
+WAIT(1)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+   LCLICK($_return1+5, $_return2+5)
+   WAITMS(500)
+else
+   WAIT(10)
+   IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+      LCLICK($_return1+5, $_return2+5)
+      WAITMS(500)
+   else
+      halt
+   END_IF
+END_IF  //ВСТАВКА ДЕВИЛОН
+
+LCLICK($x1+84,$y1+667)    //сформировать
+
+LoadWait()
+//ждем пока закрутится потоварно
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Users\s.kuleshov\Desktop\Запросы\НГ\исх\ВитусПТВ ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(5)
+
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+close()
+wait(1)
+LOGWRITE("Склад Витус закручен")
+/////////////////////////////////////////////////////////////////////////////
+///////////////////////////ВИТУС закручен//////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////закрутим склад по Валгри///////////////////
+
+потоварно()
+// открыли потоварно
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","ЗВИТ.bmp"),-1,70)  //ищем границы отчета
+   LCLICK($_return1, $_return2)
+Else
+   LOGWRITE("!НЕ найдено период")
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X=",$X1)
+logwrite("y=",$Y1)
+$X2=0
+$X2=$X1+657
+$Y2=0
+$Y2=$Y1+698
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки потоварно
+LCLICK($X1+250, $Y1+55)
+wait(1)
+
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   
+Else
+   LOGWRITE("14НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+//   найдем начальный период
+waitms(500)
+LCLICK($x1+120, $y1+61)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+10End()
+
+
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+KEYPRESS(#TAB)
+KEYPRESS(#TAB)
+KEYPRESS(#ENTER)
+//обнулили отдел и поставщика
+GETSCREEN($x1,$y1,$x1+150,$y1+150)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+102)=16777215)
+   LCLICK($x1+17,$y1+102)
+   WAITMS(100)
+END_IF     //проверили галку, поставили по маркетам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+127)!16777215)
+   LCLICK($x1+17,$y1+127)
+   WAITMS(100)
+END_IF     //проверили галку, поставили розвернуть по товарно
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+152)=16777215)
+   LCLICK($x1+17,$y1+152)
+   WAITMS(100)
+END_IF   //проверили галку не включать нулевую позицию
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+477)=16777215)
+   LCLICK($x1+17,$y1+477)
+   WAITMS(100)
+END_IF  // проверили галку для финансового
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+497)=16777215)
+   LCLICK($x1+17,$y1+497)
+   WAITMS(100)
+END_IF   // проверили галку не учесть склады экспонаты
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+457)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+457)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать  по производителям
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+127)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+127)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по группам
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+237,$y1+152)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+237,$y1+152)
+   WAITMS(100)
+END_IF  // проверили галку сгруппировать по ЦЕРМЕТ
+GETSCREEN($x1,$y1,$x2,$y2)
+COLORMODE(6)
+IF(pxl($x1+17,$y1+217)=16777215)
+   WAITMS(100)
+else
+   LCLICK($x1+17,$y1+217)
+   WAITMS(100)
+END_IF   //проверили галку все активные
+
+
+//выберем деп  свята
+waitms(500)
+LCLICK($X1+330, $y1+569)
+waitms(500)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#LEFT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#RIGHT)
+waitms(50)
+KEYPRESS(#PAGEUP)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#DOWN)
+waitms(50)
+KEYPRESS(#ENTER)
+waitms(500)
+
+//ПРОВЕРИЛИ ГАЛОЧКИ, ВЫСТАВИЛИ ДЕП, ОСТАВИЛИ НУЖНЫЕ
+LCLICK($x1+300,$y1+345)
+WAITMS(100)
+P10()
+WAITMS(100)
+LCLICK($x1+328,$y1+245)
+WAITMS(100)
+LCLICK($x1+300,$y1+375)
+wait(3)
+toclip("17451400")
+waitms(100)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYPRESS (#V)
+WAITMS (50)
+KEYUP (#CTRL)
+WAIT(1)
+KEYPRESS(#ENTER)
+WAIT(1)
+getscreen
+colormode(6)
+IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+   LCLICK($_return1+5, $_return2+5)
+   WAITMS(500)
+else
+   WAIT(10)
+   IF_PICTURE_IN (0,100, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Выбор.bmp"), -1, 90)
+      LCLICK($_return1+5, $_return2+5)
+      WAITMS(500)
+   else
+      halt
+   END_IF
+END_IF  //ВСТАВКА ДЕВИЛОН
+
+LCLICK($x1+84,$y1+667)    //сформировать
+
+LoadWait()
+//ждем пока закрутится потоварно
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("C:\Users\s.kuleshov\Desktop\Запросы\НГ\исх\ВалгриПТВ ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(5)
+
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+close()
+close()
+close()
+wait(1)
+LOGWRITE("Склад Валгри закручен")
+/////////////////////////////////////////////////////////////////////////////
+///////////////////////////Валгри закручен//////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+чеки:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////ФОРМИРУЕМ минус_месяц ЧЕКИ //////////////////////
+чеки()
+GETSCREEN
+COLORMODE(6)
+IF_PICTURE_IN (0,0, $_xmax,$_ymax, STRCONCAT("Картинки ОП\","Отчет.bmp"),-1,70)  //ищем границы отчета
+   LOGWRITE("+найден открытый отчет чеки")
+Else
+   LOGWRITE("!15НЕ найден открытый отчет чеки")
+   halt
+end_if
+$X1=0
+$X1=$_return1
+$Y1=0
+$Y1=$_return2
+logwrite("X1=",$X1)
+logwrite("y1=",$Y1)
+$X2=0
+$X2=$X1+400
+$Y2=0
+$Y2=$Y1+500
+logwrite("X2=",$X2)
+logwrite("y2=",$Y2)
+// присвоили переменные - границы окна настройки поступлений
+
+
+
+
+
+
+//открыть дату окончания
+MOVE($X1+250, $Y1+86)
+waitms(100)
+LCLICK($X1+250, $Y1+86)
+
+
+
+
+
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+   //только 01.2019
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   
+   
+Else
+   LOGWRITE("16НЕ СМОГ найти день окончания-сегодня")
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+118, $Y1+86)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+end_if
+
+PostBeg()
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+//только 01.2019
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+336, $Y1+180)  //маркет
+waitms(500)
+LCLICK($X1+336, $Y1+210)  //отдел
+waitms(500)
+LCLICK($X1+336, $Y1+240)  //деп
+waitms(500)
+
+//галка департамент
+LCLICK($X1+96, $Y1+380)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+435)
+waitms(500)
+LCLICK($x1+50,$y1+435)
+wait(1)
+
+CheckLoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Чеки\минус_месяц ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Чеки минус_месяц закручены")
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ЧЕКИ минус_месяц//////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/////////////////ФОРМИРУЕМ ЧЕКИ текущие //////////////////////
+//открыть дату окончания
+MOVE($X1+250, $Y1+86)
+waitms(100)
+LCLICK($X1+250, $Y1+86)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   
+   
+Else
+   LOGWRITE("17НЕ СМОГ найти день окончания-сегодня")
+   halt
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+118, $Y1+86)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("18НЕ СМОГ найти день начала-сегодня")
+   halt
+end_if
+
+PostBeg()
+
+
+
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+336, $Y1+180)  //маркет
+waitms(500)
+LCLICK($X1+336, $Y1+210)  //отдел
+waitms(500)
+LCLICK($X1+336, $Y1+240)  //деп
+waitms(500)
+
+//галка департамент
+LCLICK($X1+96, $Y1+380)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+435)
+waitms(500)
+LCLICK($x1+50,$y1+435)
+wait(1)
+
+CheckLoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Чеки\текущий ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Чеки текущий закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ЧЕКИ текущий//////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+/////////////////ФОРМИРУЕМ ЧЕКИ минус_год //////////////////////
+
+
+
+
+//открыть дату окончания
+MOVE($X1+250, $Y1+86)
+waitms(100)
+LCLICK($X1+250, $Y1+86)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+Else
+   LOGWRITE("19НЕ СМОГ найти день окончания-сегодня")
+   halt
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+118, $Y1+86)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("20НЕ СМОГ найти день начала-сегодня")
+   halt
+end_if
+
+PostBeg()
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+336, $Y1+180)  //маркет
+waitms(500)
+LCLICK($X1+336, $Y1+210)  //отдел
+waitms(500)
+LCLICK($X1+336, $Y1+240)  //деп
+waitms(500)
+
+//галка департамент
+LCLICK($X1+96, $Y1+380)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+435)
+waitms(500)
+LCLICK($x1+50,$y1+435)
+wait(1)
+
+CheckLoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Чеки\минус_год ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Чеки минус_год закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////  ЗАКРУТИЛИ ЧЕКИ минус_год////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+/////////////////ФОРМИРУЕМ ЧЕКИ минус_2года //////////////////////
+
+//открыть дату окончания
+MOVE($X1+250, $Y1+86)
+waitms(100)
+LCLICK($X1+250, $Y1+86)
+
+//выставить сегодня
+GETSCREEN($x1,$y1,$x1+280,$y1+280)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1, $x1+280,$y1+280, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   окончания на сегодня
+   waitms(500)
+   lclick($_return1+10, $_return2+5)
+   waitms(500)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+   
+   10End()
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#RIGHT)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+   KEYPRESS(#DOWN)
+   WAITMS(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день окончания-сегодня")
+   halt
+end_if  // обнулили дату окончания к  закрытому дню
+
+//   найдем начальный период
+waitms(500)
+LCLICK($X1+118, $Y1+86)
+waitms(500)
+GETSCREEN($x1,$y1,$x1+250,$y1+260)
+COLORMODE(5)
+IF_PICTURE_IN ($x1,$y1,$x1+250,$y1+260, STRCONCAT("Картинки ОП\","сегодня.bmp"),-1,80)//дата   начала на сегодня
+   waitms(500)
+   LCLICK($_return1, $_return2)
+   LCLICK($_return1, $_return2-148)
+   waitms(500)
+Else
+   LOGWRITE("НЕ СМОГ найти день начала-сегодня")
+   halt
+end_if
+
+PostBeg()
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#RIGHT)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+KEYPRESS(#DOWN)
+WAITMS(500)
+
+//обнулить отдел, деп, подставить галку подгруппа
+waitms(500)
+LCLICK($X1+336, $Y1+180)  //маркет
+waitms(500)
+LCLICK($X1+336, $Y1+210)  //отдел
+waitms(500)
+LCLICK($X1+336, $Y1+240)  //деп
+waitms(500)
+
+//галка департамент
+LCLICK($X1+96, $Y1+380)
+waitms(500)
+
+//сформировать
+MOVE($x1+50,$y1+435)
+waitms(500)
+LCLICK($x1+50,$y1+435)
+wait(1)
+
+CheckLoadWait()
+
+wait(1)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#E)
+WAITMS (50)
+KEYUP (#E)
+KEYUP (#CTRL)
+wait(2)
+toclip("Y:\105_sv\!G_fin\4_Soft\макрос GF_otchet\файлы для Динамика поступлений и чеков\Чеки\минус_2года ")
+WAITMS(50)
+KEYDOWN (#CTRL)
+WAITMS (50)
+KEYDOWN (#V)
+WAITMS (50)
+KEYUP (#V)
+KEYUP (#CTRL)
+WAITMS (50)
+KEYPRESS(#BACKSPACE)
+WAITMS(500)
+KEYPRESS(#ENTER)
+WAITMS(500)
+KEYPRESS(#LEFT)
+WAITMS(500)
+KEYPRESS(#ENTER)
+wait(10)
+// заэкспортировали потоварно
+ExpWait()
+//проверили что уже заэкспортировался
+wait(1)
+wndbump($Pot1)
+wait(1)
+wndbump($Pot1)
+waitms(500)
+
+close()
+wait(1)
+LOGWRITE("Чеки минус_2года закручены")
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////  ЗАКРУТИЛИ ЧЕКИ минус_2года////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+HINTPOPUP("ВСЕ СФОРМИРОВАНО", "ГОТОВО")
+
+END_SUB
